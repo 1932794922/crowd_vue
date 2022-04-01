@@ -1,0 +1,30 @@
+{
+  "name": "crowd_vue",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^0.26.1",
+    "blueimp-md5": "^2.19.0",
+    "bootstrap": "3",
+    "element-plus": "^2.1.7",
+    "vue": "^3.2.25",
+    "vue-nprogress-loading-bar": "^0.0.6",
+    "vue-router": "4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.3.0",
+    "node-sass": "^7.0.1",
+    "sass": "^1.49.10",
+    "sass-loader": "^12.6.0",
+    "style-resources-loader": "^1.4.1",
+    "unplugin-auto-import": "^0.6.8",
+    "unplugin-vue-components": "^0.18.5",
+    "vite": "^2.9.0",
+    "vue-cli-plugin-style-resources-loader": "~0.1.5"
+  }
+}
