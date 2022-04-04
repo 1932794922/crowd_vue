@@ -12,10 +12,10 @@
                 <i class="glyphicon glyphicon-user"></i> 张三 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#"><i class="glyphicon glyphicon-cog"></i> 个人设置</a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-comment"></i> 消息</a></li>
+                <li><i class="glyphicon glyphicon-cog"></i>个人设置</li>
+                <li><i class="glyphicon glyphicon-comment"></i>消息</li>
                 <li class="divider"></li>
-                <li><a href="index.html"><i class="glyphicon glyphicon-off"></i> 退出系统</a></li>
+                <li @click="logout"><i class="glyphicon glyphicon-off"></i> 退出系统</li>
               </ul>
             </div>
           </li>
@@ -33,12 +33,49 @@
   </nav>
 </template>
 
-<script>
-export default {
-  name: "HeadTitle"
+<script setup>
+
+
+import {useRouter} from "vue-router";
+import {removeAllSession} from "@/utils/web-utils";
+
+const router = useRouter()
+
+const logout = () => {
+  ElMessageBox.confirm(
+      '是否确定要退出系统?',
+      '退出系统',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'danger',
+      }
+  )
+      .then(() => {
+        removeAllSession("sessionId");
+        router.push('/')
+        ElMessage({
+          type: 'success',
+          message: '退出成功',
+        })
+      })
 }
+
+
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.dropdown-menu {
+  li {
+    i {
+      padding-right: 5px;
+    }
+
+    text-align: center;
+    padding-top: 8px;
+    cursor: pointer;
+  }
+
+}
 
 </style>

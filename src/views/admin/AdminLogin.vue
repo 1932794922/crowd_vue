@@ -6,7 +6,7 @@
       </div>
     </div>
   </nav>
-  <div class="container">
+  <div class="container-login">
     <el-form
         ref="formRef"
         :model="adminForm"
@@ -38,7 +38,7 @@
 import {adminLogin} from "@/api/admin";
 import {reactive, ref} from "vue";
 import md5 from "blueimp-md5"
-import {errorsMsg, successMsg} from '@/utils/web-utils'
+import {errorsMsg, setSession, successMsg} from '@/utils/web-utils'
 import {useRouter} from "vue-router";
 
 const formRef = ref(null);
@@ -74,7 +74,9 @@ const adminLoginFun = (params) => {
     if (res.code !== 200) {
       return errorsMsg(res.message)
     }
-    router.push("/")
+    console.log(res)
+    router.push("/admin/main")
+    setSession("sessionId",res.data.sessionId)
     return successMsg(res.message);
   })
 }
@@ -102,5 +104,7 @@ const resetForm = (formEl) => {
 </script>
 
 <style scoped>
-
+div.container-login{
+  margin-top: 100px;
+}
 </style>

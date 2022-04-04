@@ -23,6 +23,7 @@ const staticRoutes = [
     {
         path: '/admin/main',
         name: 'MainDash',
+        redirect: "/admin/main/user",
         component: () => import('@/views/admin/MainDash.vue'),
         children: [{
             path: 'user',

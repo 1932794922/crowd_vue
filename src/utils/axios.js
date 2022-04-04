@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-import NProgress from 'nprogress' // 进度条
+import NProgress from 'nprogress'
+import {getSession} from "@/utils/web-utils"; // 进度条
 
 const instance = axios.create({
   baseURL: '/api',
@@ -17,7 +18,7 @@ instance.interceptors.request.use(
     NProgress.start()
 
     // 携带token
-    config.headers.Authorization = window.sessionStorage.getItem('token')
+    config.headers.Authorization = "Bearer ".concat(getSession("sessionId"));
     return config
   },
   error => {

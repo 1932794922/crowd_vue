@@ -1,365 +1,343 @@
 <template>
-  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <div><a class="navbar-brand" style="font-size:32px;" href="#">众筹平台 - 用户维护</a></div>
-      </div>
-      <div id="navbar" class="navbar-collapse collapse">
-        <ul class="nav navbar-nav navbar-right">
-          <li style="padding-top:8px;">
-            <div class="btn-group">
-              <button type="button" class="btn btn-default btn-success dropdown-toggle" data-toggle="dropdown">
-                <i class="glyphicon glyphicon-user"></i> 张三 <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="#"><i class="glyphicon glyphicon-cog"></i> 个人设置</a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-comment"></i> 消息</a></li>
-                <li class="divider"></li>
-                <li><a href="index.html"><i class="glyphicon glyphicon-off"></i> 退出系统</a></li>
-              </ul>
-            </div>
-          </li>
-          <li style="margin-left:10px;padding-top:8px;">
-            <button type="button" class="btn btn-default btn-danger">
-              <span class="glyphicon glyphicon-question-sign"></span> 帮助
-            </button>
-          </li>
-        </ul>
-        <form class="navbar-form navbar-right">
-          <input type="text" class="form-control" placeholder="Search...">
-        </form>
-      </div>
-    </div>
-  </nav>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-3 col-md-2 sidebar">
-        <div class="tree">
-          <ul style="padding-left:0px;" class="list-group">
-            <li class="list-group-item tree-closed" >
-              <a href="main.html"><i class="glyphicon glyphicon-dashboard"></i> 控制面板</a>
-            </li>
-            <li class="list-group-item">
-              <span><i class="glyphicon glyphicon glyphicon-tasks"></i> 权限管理 <span class="badge" style="float:right">3</span></span>
-              <ul style="margin-top:10px;">
-                <li style="height:30px;">
-                  <a href="user.html" style="color:red;"><i class="glyphicon glyphicon-user"></i> 用户维护</a>
-                </li>
-                <li style="height:30px;">
-                  <a href="role.html"><i class="glyphicon glyphicon-king"></i> 角色维护</a>
-                </li>
-                <li style="height:30px;">
-                  <a href="permission.html"><i class="glyphicon glyphicon-lock"></i> 菜单维护</a>
-                </li>
-              </ul>
-            </li>
-            <li class="list-group-item tree-closed">
-              <span><i class="glyphicon glyphicon-ok"></i> 业务审核 <span class="badge" style="float:right">3</span></span>
-              <ul style="margin-top:10px;display:none;">
-                <li style="height:30px;">
-                  <a href="auth_cert.html"><i class="glyphicon glyphicon-check"></i> 实名认证审核</a>
-                </li>
-                <li style="height:30px;">
-                  <a href="auth_adv.html"><i class="glyphicon glyphicon-check"></i> 广告审核</a>
-                </li>
-                <li style="height:30px;">
-                  <a href="auth_project.html"><i class="glyphicon glyphicon-check"></i> 项目审核</a>
-                </li>
-              </ul>
-            </li>
-            <li class="list-group-item tree-closed">
-              <span><i class="glyphicon glyphicon-th-large"></i> 业务管理 <span class="badge" style="float:right">7</span></span>
-              <ul style="margin-top:10px;display:none;">
-                <li style="height:30px;">
-                  <a href="cert.html"><i class="glyphicon glyphicon-picture"></i> 资质维护</a>
-                </li>
-                <li style="height:30px;">
-                  <a href="type.html"><i class="glyphicon glyphicon-equalizer"></i> 分类管理</a>
-                </li>
-                <li style="height:30px;">
-                  <a href="process.html"><i class="glyphicon glyphicon-random"></i> 流程管理</a>
-                </li>
-                <li style="height:30px;">
-                  <a href="advertisement.html"><i class="glyphicon glyphicon-hdd"></i> 广告管理</a>
-                </li>
-                <li style="height:30px;">
-                  <a href="message.html"><i class="glyphicon glyphicon-comment"></i> 消息模板</a>
-                </li>
-                <li style="height:30px;">
-                  <a href="project_type.html"><i class="glyphicon glyphicon-list"></i> 项目分类</a>
-                </li>
-                <li style="height:30px;">
-                  <a href="tag.html"><i class="glyphicon glyphicon-tags"></i> 项目标签</a>
-                </li>
-              </ul>
-            </li>
-            <li class="list-group-item tree-closed" >
-              <a href="param.html"><i class="glyphicon glyphicon-list-alt"></i> 参数管理</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title"><i class="glyphicon glyphicon-th"></i> 数据列表</h3>
-          </div>
-          <div class="panel-body">
-            <form class="form-inline" role="form" style="float:left;">
-              <div class="form-group has-feedback">
-                <div class="input-group">
-                  <div class="input-group-addon">查询条件</div>
-                  <input class="form-control has-success" type="text" placeholder="请输入查询条件">
-                </div>
-              </div>
-              <button type="button" class="btn btn-warning"><i class="glyphicon glyphicon-search"></i> 查询</button>
-            </form>
-            <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"><i class=" glyphicon glyphicon-remove"></i> 删除</button>
-            <button type="button" class="btn btn-primary" style="float:right;" onclick="window.location.href='add.html'"><i class="glyphicon glyphicon-plus"></i> 新增</button>
-            <br>
-            <hr style="clear:both;">
-            <div class="table-responsive">
-              <table class="table  table-bordered">
-                <thead>
-                <tr >
-                  <th width="30">#</th>
-                  <th width="30"><input type="checkbox"></th>
-                  <th>账号</th>
-                  <th>名称</th>
-                  <th>邮箱地址</th>
-                  <th width="100">操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>1</td>
-                  <td><input type="checkbox"></td>
-                  <td>Lorem</td>
-                  <td>ipsum</td>
-                  <td>dolor</td>
-                  <td>
-                    <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
-                    <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-                    <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td><input type="checkbox"></td>
-                  <td>amet</td>
-                  <td>consectetur</td>
-                  <td>adipiscing</td>
-                  <td>
-                    <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
-                    <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-                    <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td><input type="checkbox"></td>
-                  <td>Integer</td>
-                  <td>nec</td>
-                  <td>odio</td>
-                  <td>
-                    <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
-                    <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-                    <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td><input type="checkbox"></td>
-                  <td>libero</td>
-                  <td>Sed</td>
-                  <td>cursus</td>
-                  <td>
-                    <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
-                    <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-                    <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td><input type="checkbox"></td>
-                  <td>dapibus</td>
-                  <td>diam</td>
-                  <td>Sed</td>
-                  <td>
-                    <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
-                    <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-                    <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>6</td>
-                  <td><input type="checkbox"></td>
-                  <td>Nulla</td>
-                  <td>quis</td>
-                  <td>sem</td>
-                  <td>
-                    <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
-                    <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-                    <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>7</td>
-                  <td><input type="checkbox"></td>
-                  <td>nibh</td>
-                  <td>elementum</td>
-                  <td>imperdiet</td>
-                  <td>
-                    <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
-                    <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-                    <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>8</td>
-                  <td><input type="checkbox"></td>
-                  <td>sagittis</td>
-                  <td>ipsum</td>
-                  <td>Praesent</td>
-                  <td>
-                    <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
-                    <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-                    <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>9</td>
-                  <td><input type="checkbox"></td>
-                  <td>Fusce</td>
-                  <td>nec</td>
-                  <td>tellus</td>
-                  <td>
-                    <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
-                    <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-                    <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>10</td>
-                  <td><input type="checkbox"></td>
-                  <td>augue</td>
-                  <td>semper</td>
-                  <td>porta</td>
-                  <td>
-                    <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
-                    <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-                    <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>11</td>
-                  <td><input type="checkbox"></td>
-                  <td>massa</td>
-                  <td>Vestibulum</td>
-                  <td>lacinia</td>
-                  <td>
-                    <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
-                    <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-                    <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>12</td>
-                  <td><input type="checkbox"></td>
-                  <td>eget</td>
-                  <td>nulla</td>
-                  <td>Class</td>
-                  <td>
-                    <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
-                    <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-                    <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>13</td>
-                  <td><input type="checkbox"></td>
-                  <td>taciti</td>
-                  <td>sociosqu</td>
-                  <td>ad</td>
-                  <td>
-                    <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
-                    <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-                    <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>14</td>
-                  <td><input type="checkbox"></td>
-                  <td>torquent</td>
-                  <td>per</td>
-                  <td>conubia</td>
-                  <td>
-                    <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
-                    <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-                    <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>15</td>
-                  <td><input type="checkbox"></td>
-                  <td>per</td>
-                  <td>inceptos</td>
-                  <td>himenaeos</td>
-                  <td>
-                    <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
-                    <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-                    <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>16</td>
-                  <td><input type="checkbox"></td>
-                  <td>sodales</td>
-                  <td>ligula</td>
-                  <td>in</td>
-                  <td>
-                    <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
-                    <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-                    <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-                  </td>
-                </tr>
-                </tbody>
-                <tfoot>
-                <tr >
-                  <td colspan="6" align="center">
-                    <ul class="pagination">
-                      <li class="disabled"><a href="#">上一页</a></li>
-                      <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-                      <li><a href="#">2</a></li>
-                      <li><a href="#">3</a></li>
-                      <li><a href="#">4</a></li>
-                      <li><a href="#">5</a></li>
-                      <li><a href="#">下一页</a></li>
-                    </ul>
-                  </td>
-                </tr>
-
-                </tfoot>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <el-breadcrumb separator-icon="ArrowRight">
+    <el-breadcrumb-item :to="{ path: '/' }">控制面板</el-breadcrumb-item>
+    <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+  </el-breadcrumb>
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="glyphicon glyphicon-th"></i>数据列表</h3>
   </div>
+  <el-row align="middle">
+    <el-col :span="10">
+      <el-input
+          v-model="keyword"
+          placeholder="请输入搜索条件"
+          @change="keywordChanged"
+      >
+        <template #prepend>查询条件</template>
+      </el-input>
+    </el-col>
+    <el-col :push="9" :span="5">
+      <el-button type="primary" @click="actionFun(null,CONSTANT.UPDATE)">添加</el-button>
+      <el-button type="danger" @click="deleteFun(adminInfo)">删除</el-button>
+    </el-col>
+  </el-row>
+
+  <el-table
+      :data="tableData"
+      style="width: 100%;margin-top: 15px"
+      border
+      stripe
+      @selection-change="handleSelectionChange"
+  >
+    <el-table-column type="selection" width="50"/>
+    <el-table-column align="center" type="index" label="编号" width="60"/>
+    <el-table-column align="center" prop="loginAcct" label="账号" width="180"/>
+    <el-table-column align="center" prop="userName" label="名称" width="180"/>
+    <el-table-column align="center" prop="email" label="邮件地址"/>
+    <el-table-column align="center" prop="createTime" label="创建时间" width="180"/>
+    <el-table-column align="center" label="操作">
+      <template #default="scope">
+        <el-button type="warning" size="small" @click="actionFun(scope.row,CONSTANT.ALLOCATION)">分配角色</el-button>
+        <el-button type="primary" size="small" @click="actionFun(scope.row,CONSTANT.UPDATE)">编辑</el-button>
+        <el-button type="danger" size="small" @click="deleteFun(scope.row)">删除</el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+  <el-pagination
+      :currentPage="pageInfo.pageNum"
+      :page-size="pageInfo.pageSize"
+      :page-sizes="[5, 10, 15, 20]"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pageInfo.total"
+      @size-change="handleSizeChange"
+      hide-on-single-page
+      @current-change="handleCurrentChange"
+  />
+
+  <Dialog :dialogProps="dialogProps" @dialogTrigger="dialogTrigger">
+    <template #editForm>
+      <div class="panel panel-default">
+        <div class="panel-heading">表单数据
+          <div style="float:right;cursor:pointer;" data-toggle="modal" data-target="#myModal"><i
+              class="glyphicon glyphicon-question-sign"></i></div>
+        </div>
+        <div class="panel-body">
+          <el-form
+              ref="ruleFormRef"
+              :model="form.adminInfo"
+              :rules="form.rules"
+              label-width="120px"
+          >
+            <el-form-item v-for="(item,index) in form.adminInfo.data" :key="index"
+                          :label="item.label"
+                          :prop=item.prop>
+              <el-input :type="item.type"
+                        v-model="item.value"/>
+            </el-form-item>
+          </el-form>
+        </div>
+      </div>
+    </template>
+    <template #allocation>
+      <el-transfer
+          style="text-align: left; display: inline-block"
+          filterable
+          :left-default-checked="[2, 3]"
+          :right-default-checked="[1]"
+          :titles="['Source', 'Target']"
+          :button-texts="['To left', 'To right']"
+          :format="{
+        noChecked: '${total}',
+        hasChecked: '${checked}/${total}',
+      }"
+      >
+        <template #left-footer>
+          <el-button class="transfer-footer" size="small">Operation</el-button>
+        </template>
+        <template #right-footer>
+          <el-button class="transfer-footer" size="small">Operation</el-button>
+        </template>
+      </el-transfer>
+    </template>
+  </Dialog>
+
 </template>
 
-<script>
-export default {
-  name: "User"
+<script setup>
+import {concat, isArray} from 'lodash'
+import {onBeforeMount, reactive, ref} from "vue";
+import {addAdmin, adminList, deleteAdmin, updateAdmin} from "@/api/admin";
+import Dialog from "@/components/Dialog.vue";
+import * as CONSTANT from "@/utils/constant";
+import {arrayKeyForObject, errorsMsg, findKeyForValue, successMsg} from "@/utils/web-utils";
+import md5 from "blueimp-md5";
+
+
+const keyword = ref('')
+
+const ruleFormRef = ref(null)
+
+const pageInfo = reactive({
+  pageSize: 10,
+  total: 0,
+  pageNum: 1,
+})
+
+const adminInfo = reactive({
+  id: -1,
+  loginAcct: '',
+  userName: '',
+  email: "",
+  userPswd: "",
+})
+
+const form = reactive({
+  adminInfo: {
+    data: [
+      {label: "登陆账号", value: '', prop: 'loginAcct'},
+      {label: "用户名称", value: '', prop: 'userName'},
+      {label: "邮箱地址", value: '', prop: 'email'},
+      {label: "密码", value: '', prop: 'userPswd', type: 'password'},
+    ]
+  }
+})
+
+const tableData = ref([])
+
+const dialogProps = reactive({
+  isShow: false,
+  action: ''
+})
+
+const handleSelectionChange = (arrayVal) => {
+  let ids = []
+  arrayVal.forEach(item => {
+    ids.push(item.id)
+  })
+  adminInfo.id = ids
+  console.log(adminInfo)
 }
+
+/**
+ * 获取管理员列表
+ * @param keyWord
+ * @param pageNum
+ * @param pageSize
+ */
+const getAdminList = (keyWord = keyword.value, pageNum = pageInfo.pageNum,
+                      pageSize = pageInfo.pageSize) => {
+  adminList({
+    keyWord,
+    pageNum,
+    pageSize
+  }).then(res => {
+    pageInfo.pageSize = res.data.pageSize
+    pageInfo.total = res.data.total || 0
+    pageInfo.pageNum = res.data.pageNum
+    tableData.value = res.data.record
+  }).catch(err => {
+
+  })
+};
+
+const handleSizeChange = (number) => {
+  pageInfo.pageSize = number
+  getAdminList()
+}
+const handleCurrentChange = (number) => {
+  pageInfo.pageNum = number
+  getAdminList()
+}
+const keywordChanged = (search) => {
+  keyword.value = search
+  getAdminList()
+}
+
+//权限分配
+const allocationFun = (row) => {
+
+}
+
+const actionFun = (row, action) => {
+  //用于判断是编辑还是删除操作,id为-1时为新增
+  adminInfo.id = -1
+
+  if (row) {
+    adminInfo.id = row.id;
+    adminInfo.email = row.email;
+    adminInfo.loginAcct = row.loginAcct;
+    adminInfo.userName = row.userName;
+    //封装数据
+    findKeyForValue(form.adminInfo.data, adminInfo);
+  }
+
+  dialogProps.isShow = true;
+  dialogProps.action = action
+}
+
+const addFun = (adminInfo) => {
+  arrayKeyForObject(form.adminInfo.data, adminInfo);
+  adminInfo.id = null;
+  adminInfo.userPswd = md5(adminInfo.userPswd).toUpperCase();
+  addAdmin({...adminInfo}).then(res => {
+    if (res.code === 200) {
+      getAdminList(null, pageInfo.total, pageInfo.pageSize)
+      resetForm(ruleFormRef.value)
+      return successMsg(res.message);
+    }
+    return errorsMsg(res.message)
+  }).catch(err => {
+    return errorsMsg(err.message)
+  })
+}
+
+const editFun = (adminInfo) => {
+  arrayKeyForObject(form.adminInfo.data, adminInfo);
+  adminInfo.userPswd = md5(adminInfo.userPswd).toUpperCase();
+  updateAdmin({...adminInfo}).then(res => {
+    if (res.code === 200) {
+      getAdminList()
+      return successMsg(res.message);
+    }
+    return errorsMsg(res.message)
+  }).catch(err => {
+    return errorsMsg(err.message)
+  })
+}
+const deleteFun = (row) => {
+  console.log(row)
+  if (row.id === -1 || isArray(row.id) &&row.id.length <= 0) {
+    return errorsMsg("请选择要删除的数据");
+  }
+    ElMessageBox.confirm(
+        `是否确定要删除 [ ${row.userName || "批量"} ] ?`,
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'danger',
+        }
+    ).then(() => {
+      deleteAdmin({
+        id: concat(row.id)
+      }).then(res => {
+        if (res.code === 200) {
+          getAdminList()
+          return successMsg(res.message);
+        }
+        return errorsMsg(res.message)
+
+      }).catch(err => {
+      })
+
+    }).catch(err => {
+
+    })
+
+}
+
+const dialogTrigger = (isShow, dialogAction) => {
+  if (dialogAction === "cancel") {
+    dialogProps.isShow = isShow;
+  } else {
+    return submitForm(ruleFormRef.value, isShow)
+  }
+  resetForm(ruleFormRef.value)
+}
+
+onBeforeMount(() => {
+  getAdminList()
+})
+
+const submitForm = (formEl, isShow) => {
+  for (const item of form.adminInfo.data) {
+    console.log(item)
+    if (!item.value && item.value.trim().length === 0) {
+      return errorsMsg(`请填写 ${item.label} `)
+    }
+  }
+  switch (dialogProps.action) {
+    case CONSTANT.UPDATE:
+      if (adminInfo.id === -1) {
+        addFun(adminInfo);
+      } else {
+        editFun(adminInfo);
+      }
+      break;
+    case CONSTANT.ALLOCATION:
+      break;
+
+  }
+
+  dialogProps.isShow = isShow;
+
+}
+
+const resetForm = (formEl) => {
+  form.adminInfo.data.forEach((item) => {
+    item.value = ''
+  })
+  if (!formEl) return
+  formEl.resetFields()
+}
+
 </script>
 
 <style scoped>
 .tree li {
   list-style-type: none;
-  cursor:pointer;
+  cursor: pointer;
 }
-table tbody tr:nth-child(odd){background:#F4F4F4;}
-table tbody td:nth-child(even){color:#C00;}
+
+table tbody tr:nth-child(odd) {
+  background: #F4F4F4;
+}
+
+table tbody td:nth-child(even) {
+  color: #C00;
+}
+
+.el-pagination {
+  margin-top: 5px;
+  justify-content: center;
+}
 </style>
