@@ -1,7 +1,7 @@
 <template>
   <el-breadcrumb separator-icon="ArrowRight">
-    <el-breadcrumb-item :to="{ path: '/' }">控制面板</el-breadcrumb-item>
-    <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+    <el-breadcrumb-item :to="{ path: '/' }">权限管理</el-breadcrumb-item>
+    <el-breadcrumb-item>角色维护</el-breadcrumb-item>
   </el-breadcrumb>
   <div class="panel-heading">
     <h3 class="panel-title"><i class="glyphicon glyphicon-th"></i>数据列表</h3>
@@ -9,9 +9,9 @@
   <el-row align="middle">
     <el-col :span="10">
       <el-input
-          v-model="keyword"
+          v-model="keyWork"
           placeholder="请输入搜索条件"
-          @change="keywordChanged"
+          @change="keyWorkChanged"
       >
         <template #prepend>查询条件</template>
       </el-input>
@@ -31,11 +31,8 @@
   >
     <el-table-column type="selection" width="50"/>
     <el-table-column align="center" type="index" label="编号" width="60"/>
-    <el-table-column align="center" prop="loginAcct" label="账号" width="180"/>
-    <el-table-column align="center" prop="userName" label="名称" width="180"/>
-    <el-table-column align="center" prop="email" label="邮件地址"/>
-    <el-table-column align="center" prop="createTime" label="创建时间" width="180"/>
-    <el-table-column align="center" label="操作">
+    <el-table-column align="center" prop="name" label="名称" />
+    <el-table-column align="center" label="操作"  width="280">
       <template #default="scope">
         <el-button type="warning" size="small" @click="actionFun(scope.row,CONSTANT.ALLOCATION)">分配角色</el-button>
         <el-button type="primary" size="small" @click="actionFun(scope.row,CONSTANT.UPDATE)">编辑</el-button>
@@ -102,18 +99,16 @@
   </Dialog>
 
 </template>
-
+<!--资质维护-->
 <script setup>
 import {concat, isArray} from 'lodash'
 import {onBeforeMount, reactive, ref} from "vue";
-import {addAdmin, adminList, deleteAdmin, updateAdmin} from "@/api/admin";
 import Dialog from "@/components/Dialog.vue";
 import * as CONSTANT from "@/utils/constant";
 import {arrayKeyForObject, errorsMsg, findKeyForValue, successMsg} from "@/utils/web-utils";
-import md5 from "blueimp-md5";
+import {roleList, updateRole, addRole, deleteRole} from "@/api/admin/uesr/role";
 
-
-const keyword = ref('')
+const keyWork = ref("")
 
 const ruleFormRef = ref(null)
 
@@ -125,19 +120,13 @@ const pageInfo = reactive({
 
 const adminInfo = reactive({
   id: -1,
-  loginAcct: '',
-  userName: '',
-  email: "",
-  userPswd: "",
+  name: '',
 })
 
 const form = reactive({
   adminInfo: {
     data: [
-      {label: "登陆账号", value: '', prop: 'loginAcct'},
-      {label: "用户名称", value: '', prop: 'userName'},
-      {label: "邮箱地址", value: '', prop: 'email'},
-      {label: "密码", value: '', prop: 'userPswd', type: 'password'},
+      {label: "名称", value: '', prop: 'name'},
     ]
   }
 })
@@ -155,42 +144,45 @@ const handleSelectionChange = (arrayVal) => {
     ids.push(item.id)
   })
   adminInfo.id = ids
-  console.log(adminInfo)
 }
 
 /**
  * 获取管理员列表
- * @param keyWord
+ * @param keyWorks
  * @param pageNum
  * @param pageSize
  */
-const getAdminList = (keyWord = keyword.value, pageNum = pageInfo.pageNum,
-                      pageSize = pageInfo.pageSize) => {
-  adminList({
-    keyWord,
+const getRoleList = (keyWorks = keyWork.value, pageNum = pageInfo.pageNum,
+                     pageSize = pageInfo.pageSize) => {
+  roleList({
+    keyWorks,
     pageNum,
     pageSize
   }).then(res => {
+    if (res.code !== 200) {
+      return errorsMsg(res.message)
+    }
     pageInfo.pageSize = res.data.pageSize
     pageInfo.total = res.data.total || 0
     pageInfo.pageNum = res.data.pageNum
     tableData.value = res.data.record
   }).catch(err => {
-
+    return errorsMsg(err.message)
   })
 };
 
 const handleSizeChange = (number) => {
   pageInfo.pageSize = number
-  getAdminList()
+  getRoleList()
 }
 const handleCurrentChange = (number) => {
   pageInfo.pageNum = number
-  getAdminList()
+  getRoleList()
 }
-const keywordChanged = (search) => {
-  keyword.value = search
-  getAdminList()
+const keyWorkChanged = (search) => {
+  keyWork.value = search
+
+  getRoleList()
 }
 
 //权限分配
@@ -204,9 +196,7 @@ const actionFun = (row, action) => {
 
   if (row) {
     adminInfo.id = row.id;
-    adminInfo.email = row.email;
-    adminInfo.loginAcct = row.loginAcct;
-    adminInfo.userName = row.userName;
+    adminInfo.name = row.name;
     //封装数据
     findKeyForValue(form.adminInfo.data, adminInfo);
   }
@@ -218,10 +208,9 @@ const actionFun = (row, action) => {
 const addFun = (adminInfo) => {
   arrayKeyForObject(form.adminInfo.data, adminInfo);
   adminInfo.id = null;
-  adminInfo.userPswd = md5(adminInfo.userPswd).toUpperCase();
-  addAdmin({...adminInfo}).then(res => {
+  addRole({...adminInfo}).then(res => {
     if (res.code === 200) {
-      getAdminList(null, pageInfo.total, pageInfo.pageSize)
+      getRoleList(null, pageInfo.total, pageInfo.pageSize)
       resetForm(ruleFormRef.value)
       return successMsg(res.message);
     }
@@ -233,10 +222,9 @@ const addFun = (adminInfo) => {
 
 const editFun = (adminInfo) => {
   arrayKeyForObject(form.adminInfo.data, adminInfo);
-  adminInfo.userPswd = md5(adminInfo.userPswd).toUpperCase();
-  updateAdmin({...adminInfo}).then(res => {
+  updateRole({...adminInfo}).then(res => {
     if (res.code === 200) {
-      getAdminList()
+      getRoleList()
       return successMsg(res.message);
     }
     return errorsMsg(res.message)
@@ -245,33 +233,33 @@ const editFun = (adminInfo) => {
   })
 }
 const deleteFun = (row) => {
-  console.log(row)
   if (row.id === -1 || isArray(row.id) &&row.id.length <= 0) {
     return errorsMsg("请选择要删除的数据");
   }
-    ElMessageBox.confirm(
-        `是否确定要删除 [ ${row.userName || "批量"} ] ?`,
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'danger',
-        }
-    ).then(() => {
-      deleteAdmin({
-        id: concat(row.id)
-      }).then(res => {
-        if (res.code === 200) {
-          getAdminList()
-          return successMsg(res.message);
-        }
-        return errorsMsg(res.message)
-
-      }).catch(err => {
-      })
+  ElMessageBox.confirm(
+      `是否确定要删除 [ ${row.name || "批量"} ] ?`,
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'danger',
+      }
+  ).then(() => {
+    deleteRole({
+      id: concat(row.id)
+    }).then(res => {
+      if (res.code === 200) {
+        getRoleList()
+        return successMsg(res.message);
+      }
+      return errorsMsg(res.message)
 
     }).catch(err => {
-
+      return errorsMsg(err.message)
     })
+
+  }).catch(err => {
+    return errorsMsg(err.message)
+  })
 
 }
 
@@ -285,12 +273,11 @@ const dialogTrigger = (isShow, dialogAction) => {
 }
 
 onBeforeMount(() => {
-  getAdminList()
+  getRoleList()
 })
 
 const submitForm = (formEl, isShow) => {
   for (const item of form.adminInfo.data) {
-    console.log(item)
     if (!item.value && item.value.trim().length === 0) {
       return errorsMsg(`请填写 ${item.label} `)
     }
@@ -305,11 +292,8 @@ const submitForm = (formEl, isShow) => {
       break;
     case CONSTANT.ALLOCATION:
       break;
-
   }
-
   dialogProps.isShow = isShow;
-
 }
 
 const resetForm = (formEl) => {

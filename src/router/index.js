@@ -1,12 +1,12 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import {createRouter, createWebHashHistory} from 'vue-router'
 
 import staticRoutes from './staticroute'
-
+import NProgress from 'nprogress'
 const routes = [...staticRoutes]
 const router = createRouter({
     history: createWebHashHistory(),
     routes,
-    scrollBehavior (to, from, savePosition) {
+    scrollBehavior(to, from, savePosition) {
         if (savePosition) {
             //主页刷新保证回到顶部
             if (to.path === '/' && from.path === '/') {
@@ -23,5 +23,17 @@ const router = createRouter({
         }
     }
 })
+
+router.beforeEach((to, from, next) => {
+    //路由发生变化修改页面title
+    NProgress.start()
+    if (to.meta.title) {
+        document.title = to.meta.title
+    }
+    next()
+    NProgress.done()
+
+});
+
 
 export default router

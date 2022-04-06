@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import NProgress from 'nprogress'
-import {getSession} from "@/utils/web-utils"; // 进度条
+import {errorsMsg, getSession} from "@/utils/web-utils"; // 进度条
 
 const instance = axios.create({
   baseURL: '/api',
@@ -16,7 +16,6 @@ instance.interceptors.request.use(
   config => {
     // 在request中展示进度条
     NProgress.start()
-
     // 携带token
     config.headers.Authorization = "Bearer ".concat(getSession("sessionId"));
     return config
@@ -33,13 +32,7 @@ instance.interceptors.response.use(config => {
     return config.data
   },
   err => {
-    ElMessage({
-      showClose: true,
-      message: '网络错误,获取数据失败',
-      type: 'error',
-      offset: 100,
-      duration:500
-    })
+    errorsMsg(err.message)
     // 将异常返回给用户处理
     NProgress.done()
     return Promise.reject(err)

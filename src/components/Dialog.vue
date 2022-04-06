@@ -1,10 +1,11 @@
 <template>
   <el-dialog
-      v-model="dialogProps.isShow"
+      v-model="dialogProps.isShow "
       width="70%"
       :before-close="handleClose"
   >
     <slot v-if="dialogProps.action === CONSTANT.UPDATE" name="editForm"></slot>
+    <slot v-if="dialogProps.action === CONSTANT.ADD" name="editForm"></slot>
     <slot v-if="dialogProps.action === CONSTANT.ALLOCATION" name="allocation"></slot>
     <template #footer>
       <span class="dialog-footer">
@@ -27,17 +28,16 @@ const props = defineProps({
 const emits = defineEmits(["dialogTrigger"])
 
 const cancelBtn = () => {
-  emits("dialogTrigger", false,"cancel")
+  emits("dialogTrigger", false, "cancel")
 }
 
 const confirmBtn = () => {
-  emits("dialogTrigger", false,"confirm")
+  emits("dialogTrigger", false, "confirm")
 }
 
 const handleClose = () => {
-  emits("dialogTrigger", false,"cancel")
+  emits("dialogTrigger", false, "cancel")
 }
-
 
 </script>
 

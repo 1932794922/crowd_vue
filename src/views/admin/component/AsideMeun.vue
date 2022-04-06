@@ -6,9 +6,10 @@
       text-color="#fff"
       active-text-color="#ffd04b"
       unique-opened
+      router
   >
     <div  style="padding-top:10px;cursor: pointer;" @click="isCollapse=!isCollapse">
-      <el-menu-item style="height: 30px" index="-1" >
+      <el-menu-item style="height: 30px" index="" >
         <el-icon v-show="!isCollapse">
           <arrow-left-bold/>
         </el-icon>
@@ -17,7 +18,7 @@
         </el-icon>
       </el-menu-item>
     </div>
-    <el-menu-item index="1">
+    <el-menu-item index="/admin/main">
       <el-icon>
         <setting/>
       </el-icon>
@@ -30,11 +31,10 @@
         </el-icon>
         <span>权限管理</span>
       </template>
-      <el-menu-item index="1-1">用户角色</el-menu-item>
-      <el-menu-item index="1-2">角色维护</el-menu-item>
-      <el-menu-item index="1-2">菜单维护</el-menu-item>
+      <el-menu-item index="/admin/main/user">用户角色</el-menu-item>
+      <el-menu-item index="/admin/main/role">角色维护</el-menu-item>
+      <el-menu-item index="/admin/main/permission">菜单维护</el-menu-item>
     </el-sub-menu>
-
     <el-sub-menu index="3">
       <template #title>
         <el-icon>
@@ -42,9 +42,9 @@
         </el-icon>
         <span>业务审核</span>
       </template>
-      <el-menu-item index="100-1">实名认证审核</el-menu-item>
-      <el-menu-item index="1-2">广告审核</el-menu-item>
-      <el-menu-item index="1-2"> 项目审核</el-menu-item>
+      <el-menu-item index="/admin/main/auth-cert">实名认证审核</el-menu-item>
+      <el-menu-item index="/admin/main/auth-adv">广告审核</el-menu-item>
+      <el-menu-item index="/admin/main/auth-project"> 项目审核</el-menu-item>
     </el-sub-menu>
     <el-sub-menu index="4">
       <template #title>
@@ -53,16 +53,16 @@
         </el-icon>
         <span>业务管理</span>
       </template>
-      <el-menu-item index="1-1">资质维护</el-menu-item>
-      <el-menu-item index="1-2">分类管理</el-menu-item>
-      <el-menu-item index="1-2">流程管理</el-menu-item>
-      <el-menu-item index="1-2">广告管理</el-menu-item>
-      <el-menu-item index="1-2">消息模板</el-menu-item>
-      <el-menu-item index="1-2">项目分类</el-menu-item>
-      <el-menu-item index="1-2">项目标签</el-menu-item>
+      <el-menu-item index="/admin/main/cert" >资质维护</el-menu-item>
+      <el-menu-item index="/admin/main/type" >分类管理</el-menu-item>
+      <el-menu-item index="/admin/main/process" >流程管理</el-menu-item>
+      <el-menu-item index="/admin/main/advertisement" >广告管理</el-menu-item>
+      <el-menu-item index="/admin/main/message" >消息模板</el-menu-item>
+      <el-menu-item index="/admin/main/project-type" >项目分类</el-menu-item>
+      <el-menu-item index="/admin/main/tag" >项目标签</el-menu-item>
 
     </el-sub-menu>
-    <el-menu-item index="2">
+    <el-menu-item index="/admin/main/param">
       <el-icon>
         <setting/>
       </el-icon>
@@ -82,15 +82,11 @@ const isCollapse = ref(false);
 <style lang="scss" scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
-  min-height: 500px;
-  height: 500px;
   overflow: auto;
   overflow-x: hidden;
 }
 
 .el-menu-vertical-demo {
-  min-height: 500px;
-  height: 500px;
   overflow: auto;
   overflow-x: hidden;
 }

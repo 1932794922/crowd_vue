@@ -36,5 +36,9 @@ import Footer from "@/components/Footer.vue";
 .common-layout{
   background: #f8f6f6;
 }
+.box-card{
+  height: 80vh;
+  overflow: auto;
+}
 
 </style>

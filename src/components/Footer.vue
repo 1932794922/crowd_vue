@@ -22,7 +22,6 @@
 
 <style scoped>
 #footer {
-  padding: 15px 0;
   background: #fff;
   text-align: center;
 }

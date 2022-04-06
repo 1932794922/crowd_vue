@@ -1,3 +1,5 @@
+import {includes} from "lodash";
+
 const successMsg = (msg) => {
     return ElMessage({
         message: msg,
@@ -20,11 +22,11 @@ const errorsMsg = (msg) => {
  * @param object  对象
  * @param prop 和对象的key相等   array[index - 1].value = object[item.prop]
  */
-const findKeyForValue = (array,object) => {
+const findKeyForValue = (array, object) => {
+    let key = Object.keys(object)
     array.forEach(item => {
-        let index = Object.keys(object).findIndex((x) => x === item.prop);
-        if (index >= 0 && index <= array.length) {
-            array[index - 1].value = object[item.prop]
+        if (includes(key, item.prop)) {
+            item.value = object[item.prop]
         }
     })
 }
@@ -33,11 +35,11 @@ const findKeyForValue = (array,object) => {
  * @param array
  * @param object
  */
-const arrayKeyForObject = (array,object) => {
+const arrayKeyForObject = (array, object) => {
+    let key = Object.keys(object)
     array.forEach(item => {
-        let index = Object.keys(object).findIndex((x) => x === item.prop);
-        if (index >= 0 && index <= array.length) {
-            object[item.prop] = array[index - 1].value
+        if (includes(key, item.prop)) {
+            object[item.prop] = item.value
         }
     })
 }
@@ -64,4 +66,13 @@ const removeAllSession = () => {
 }
 
 
-export {successMsg, errorsMsg, setSession, getSession, removeSession, removeAllSession,findKeyForValue,arrayKeyForObject}
+export {
+    successMsg,
+    errorsMsg,
+    setSession,
+    getSession,
+    removeSession,
+    removeAllSession,
+    findKeyForValue,
+    arrayKeyForObject
+}
