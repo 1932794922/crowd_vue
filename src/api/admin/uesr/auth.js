@@ -1,5 +1,9 @@
 import axios from '@/utils/axios'
 
+/**
+ * @description: Operation.vue用户操作权限 CRUD
+ * @type {{add: string, update: string, list: string, delete: string}}
+ */
 const authApi = {
     list: 'auth/list',
     add: 'auth/add',
@@ -23,6 +27,4 @@ const deleteAuth = (params) => {
     return axios.post(authApi.delete, params)
 };
 
-
-
-export { authList, updateAuth, addAuth, deleteAuth}
+export {authList, updateAuth, addAuth, deleteAuth}

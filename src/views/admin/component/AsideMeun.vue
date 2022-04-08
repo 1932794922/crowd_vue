@@ -34,6 +34,7 @@
       <el-menu-item index="/admin/main/user">用户角色</el-menu-item>
       <el-menu-item index="/admin/main/role">角色维护</el-menu-item>
       <el-menu-item index="/admin/main/permission">菜单维护</el-menu-item>
+      <el-menu-item index="/admin/main/operation">权限维护</el-menu-item>
     </el-sub-menu>
     <el-sub-menu index="3">
       <template #title>

@@ -34,10 +34,10 @@
     <el-table-column align="center" prop="loginAcct" label="账号" width="180"/>
     <el-table-column align="center" prop="userName" label="名称" width="180"/>
     <el-table-column align="center" prop="email" label="邮件地址"/>
-    <el-table-column align="center" prop="createTime" label="创建时间" width="180"/>
+    <el-table-column align="center" prop="createTime" :formatter="dateFormat" label="创建时间" width="180"/>
     <el-table-column align="center" label="操作">
       <template #default="scope">
-        <el-button type="warning" size="small" @click="actionFun(scope.row,CONSTANT.ALLOCATION)">分配角色</el-button>
+        <el-button type="warning" size="small" @click="allocation(scope.row,CONSTANT.ALLOCATION)">分配角色</el-button>
         <el-button type="primary" size="small" @click="actionFun(scope.row,CONSTANT.UPDATE)">编辑</el-button>
         <el-button type="danger" size="small" @click="deleteFun(scope.row)">删除</el-button>
       </template>
@@ -82,21 +82,21 @@
       <el-transfer
           style="text-align: left; display: inline-block"
           filterable
-          :left-default-checked="[2, 3]"
-          :right-default-checked="[1]"
-          :titles="['Source', 'Target']"
-          :button-texts="['To left', 'To right']"
+          v-model="roles.checkedSend"
+          :props="{
+            key: 'id',
+            label: 'name',
+           }"
+          :titles="['未分配', '已分配']"
+          :button-texts="['取消', '分配']"
           :format="{
-        noChecked: '${total}',
-        hasChecked: '${checked}/${total}',
+          noChecked: '${total}',
+          hasChecked: '${checked}/${total}',
       }"
+          :data="roles.data"
+          @change="handleChange"
+          target-orde="push "
       >
-        <template #left-footer>
-          <el-button class="transfer-footer" size="small">Operation</el-button>
-        </template>
-        <template #right-footer>
-          <el-button class="transfer-footer" size="small">Operation</el-button>
-        </template>
       </el-transfer>
     </template>
   </Dialog>
@@ -106,7 +106,7 @@
 <script setup>
 import {concat, isArray} from 'lodash'
 import {onBeforeMount, reactive, ref} from "vue";
-import {addAdmin, adminList, deleteAdmin, updateAdmin} from "@/api/admin";
+import {addAdmin, addAssign, AdminAssign, adminList, deleteAdmin, updateAdmin} from "@/api/admin";
 import Dialog from "@/components/Dialog.vue";
 import * as CONSTANT from "@/utils/constant";
 import {arrayKeyForObject, errorsMsg, findKeyForValue, successMsg} from "@/utils/web-utils";
@@ -116,6 +116,19 @@ import md5 from "blueimp-md5";
 const keyword = ref('')
 
 const ruleFormRef = ref(null)
+
+//角色列表
+const roles = reactive({
+  data: [],
+  // 未选择的数据
+  unChecked: [],
+  // 选择的数据
+  checked: [],
+  //绑定提交的数据
+  finalChecked: [],
+  //绑定提交的数据
+  checkedSend: []
+})
 
 const pageInfo = reactive({
   pageSize: 10,
@@ -143,6 +156,13 @@ const form = reactive({
 })
 
 const tableData = ref([])
+
+const dateFormat = (row, column, cellValue) => {
+  //时间戳转化YYYY-MM-DD HH:mm:ss
+  return new Date(cellValue * 1).toLocaleString()
+
+
+}
 
 const dialogProps = reactive({
   isShow: false,
@@ -197,18 +217,52 @@ const keywordChanged = (search) => {
 }
 
 //权限分配
-const allocationFun = (row) => {
+const allocation = (row, action) => {
+  adminInfo.id = row.id
+  dialogProps.action = action
+  roles.checkedSend = []
+  dialogProps.isShow = true;
+  AdminAssign({
+    id: row.id
+  }).then(res => {
+    if (res.code !== 200) {
+      return errorsMsg(res.message);
+    }
+    Object.assign(roles, res.data.result)
+    // 预渲染
+    roles.checked.forEach(item => {
+      roles.checkedSend.push(item.id || -1)
+    })
+    roles.data = concat(roles.unChecked, roles.checked) || []
+  }).catch(err => {
+    return errorsMsg(err.message);
+  })
+}
 
+const handleChange = (ids) => {
+  roles.checkedSend = ids
+}
+
+const allocationFun = (data) => {
+  console.log(data)
+  addAssign({
+    id:adminInfo.id,
+    ids:data
+  }).then(res => {
+    if (res.code !== 200) {
+      return errorsMsg(res.message);
+    }
+    successMsg(res.message)
+    dialogProps.isShow = false;
+  }).catch(err => {
+    return errorsMsg(err.message);
+  })
 }
 
 const actionFun = (row, action) => {
   //用于判断是编辑还是删除操作,id为-1时为新增
   adminInfo.id = -1
   if (row) {
-    // adminInfo.id = row.id;
-    // adminInfo.email = row.email;
-    // adminInfo.loginAcct = row.loginAcct;
-    // adminInfo.userName = row.userName;
     Object.assign(adminInfo, row)
     //封装数据
     findKeyForValue(form.adminInfo.data, adminInfo);
@@ -271,7 +325,7 @@ const deleteFun = (row) => {
       return errorsMsg(err.message)
     })
   }).catch(err => {
-    return errorsMsg(err.message)
+    return errorsMsg("取消删除")
   })
 
 }
@@ -290,9 +344,11 @@ onBeforeMount(() => {
 })
 
 const submitForm = (formEl, isShow) => {
-  for (const item of form.adminInfo.data) {
-    if (!item.value || item.value.trim().length === 0) {
-      return errorsMsg(`请填写 ${item.label} `)
+  if (dialogProps.action !== "allocation") {
+    for (const item of form.adminInfo.data) {
+      if (!item.value || item.value.trim().length === 0) {
+        return errorsMsg(`请填写 ${item.label} `)
+      }
     }
   }
   switch (dialogProps.action) {
@@ -304,6 +360,7 @@ const submitForm = (formEl, isShow) => {
       }
       break;
     case CONSTANT.ALLOCATION:
+      allocationFun(roles.checkedSend);
       break;
   }
   dialogProps.isShow = isShow;

@@ -57,6 +57,7 @@ const logout = () => {
         ElMessage({
           type: 'success',
           message: '退出成功',
+          center: true
         })
       })
 }

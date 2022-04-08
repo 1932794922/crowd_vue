@@ -16,4 +16,12 @@
   color: #2c3e50;
   //margin-top: 60px;
 }
+.el-transfer{
+  --el-transfer-border-color: #00AA88!important;
+  --el-transfer-panel-width: 300px!important;
+  --el-transfer-panel-header-height: 90px!important;
+  .el-transfer-panel{
+    box-shadow: 0 0 10px rgba(147, 139, 139, 0.91);
+  }
+}
 </style>

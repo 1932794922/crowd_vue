@@ -1,11 +1,18 @@
 import axios from '@/utils/axios'
 
+/**
+ * @description: 户列表
+ * @param {type}
+ * @return:
+ */
 const adminApi = {
     login: 'admin/login',
     list: 'admin/list',
     add: 'admin/add',
     update: 'admin/update',
-    delete: 'admin/delete'
+    delete: 'admin/delete',
+    assign :"admin/assign",
+    assignAdd :"admin/assign/add"
 }
 
 /**
@@ -33,6 +40,22 @@ const deleteAdmin = (params) => {
     return axios.post(adminApi.delete, params)
 };
 
+/**
+ * 获取分配角色
+ * @param params
+ * @returns {AxiosPromise}
+ */
+const AdminAssign = (params) => {
+    return axios.get(adminApi.assign, params)
+};
+/**
+ * 添加分配角色
+ * @param params
+ * @returns {AxiosPromise}
+ */
+const addAssign = (params) => {
+    return axios.post(adminApi.assignAdd, params)
+};
 
 
-export {adminLogin, adminList, updateAdmin, addAdmin, deleteAdmin}
+export {adminLogin, adminList, updateAdmin, addAdmin, deleteAdmin,AdminAssign,addAssign}

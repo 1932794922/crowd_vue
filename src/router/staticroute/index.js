@@ -65,6 +65,14 @@ const staticRoutes = [
                 },
             },
             {
+                path: 'operation',
+                name: 'Operation',
+                component: () => import('@/views/admin/user/Operation.vue'),
+                meta: {
+                    title: "菜单维护"
+                },
+            },
+            {
                 path: 'auth-cert',
                 name: 'AuthCert',
                 component: () => import('@/views/admin/auth/AuthCert.vue'),

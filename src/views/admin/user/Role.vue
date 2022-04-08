@@ -18,7 +18,7 @@
     </el-col>
     <el-col :push="9" :span="5">
       <el-button type="primary" @click="actionFun(null,CONSTANT.UPDATE)">添加</el-button>
-      <el-button type="danger" @click="deleteFun(adminInfo)">删除</el-button>
+      <el-button type="danger" @click="deleteFun(adminInfo,true)">删除</el-button>
     </el-col>
   </el-row>
 
@@ -229,12 +229,15 @@ const editFun = (adminInfo) => {
     return errorsMsg(err.message)
   })
 }
-const deleteFun = (row) => {
+const deleteFun = (row,bath) => {
   if (row.id === -1 || isArray(row.id) &&row.id.length <= 0) {
     return errorsMsg("请选择要删除的数据");
   }
+  if (bath){
+    row.name = null;
+  }
   ElMessageBox.confirm(
-      `是否确定要删除 [ ${row.name || "批量"} ] ?`,
+      `是否确定要删除 [ ${ row.name || "批量"} ] ?`,
       {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
