@@ -31,10 +31,10 @@
   >
     <el-table-column type="selection" width="50"/>
     <el-table-column align="center" type="index" label="编号" width="60"/>
-    <el-table-column align="center" prop="name" label="名称" />
-    <el-table-column align="center" label="操作"  width="280">
+    <el-table-column align="center" prop="name" label="名称"/>
+    <el-table-column align="center" label="操作" width="280">
       <template #default="scope">
-        <el-button type="warning" size="small" @click="actionFun(scope.row,CONSTANT.ALLOCATION)">分配角色</el-button>
+        <el-button type="warning" size="small" @click="allocation(scope.row,CONSTANT.ALLOCATION)">分配权限</el-button>
         <el-button type="primary" size="small" @click="actionFun(scope.row,CONSTANT.UPDATE)">编辑</el-button>
         <el-button type="danger" size="small" @click="deleteFun(scope.row)">删除</el-button>
       </template>
@@ -79,21 +79,21 @@
       <el-transfer
           style="text-align: left; display: inline-block"
           filterable
-          :left-default-checked="[2, 3]"
-          :right-default-checked="[1]"
-          :titles="['Source', 'Target']"
-          :button-texts="['To left', 'To right']"
+          v-model="auth.checkedSend"
+          :props="{
+            key: 'id',
+            label: 'label',
+           }"
+          :titles="['未分配', '已分配']"
+          :button-texts="['取消', '分配']"
           :format="{
-        noChecked: '${total}',
-        hasChecked: '${checked}/${total}',
+          noChecked: '${total}',
+          hasChecked: '${checked}/${total}',
       }"
+          :data="auth.data"
+          @change="handleChange"
+          target-orde="push "
       >
-        <template #left-footer>
-          <el-button class="transfer-footer" size="small">Operation</el-button>
-        </template>
-        <template #right-footer>
-          <el-button class="transfer-footer" size="small">Operation</el-button>
-        </template>
       </el-transfer>
     </template>
   </Dialog>
@@ -106,7 +106,8 @@ import {onBeforeMount, reactive, ref} from "vue";
 import Dialog from "@/components/Dialog.vue";
 import * as CONSTANT from "@/utils/constant";
 import {arrayKeyForObject, errorsMsg, findKeyForValue, successMsg} from "@/utils/web-utils";
-import {roleList, updateRole, addRole, deleteRole} from "@/api/admin/uesr/role";
+import {addRole, addRoleAssign, deleteRole, roleAssignList, roleList, updateRole} from "@/api/admin/uesr/role";
+
 
 const keyWork = ref("")
 
@@ -131,6 +132,20 @@ const form = reactive({
   }
 })
 
+//角色列表
+const auth = reactive({
+  data: [],
+  // 未选择的数据
+  unChecked: [],
+  // 选择的数据
+  checked: [],
+  //绑定提交的数据
+  finalChecked: [],
+  //绑定提交的数据
+  checkedSend: []
+})
+
+
 const tableData = ref([])
 
 const dialogProps = reactive({
@@ -153,7 +168,7 @@ const handleSelectionChange = (arrayVal) => {
  * @param pageSize
  */
 const getRoleList = (keyWorks = keyWork.value, pageNum = pageInfo.pageNum,
-                      pageSize = pageInfo.pageSize) => {
+                     pageSize = pageInfo.pageSize) => {
   roleList({
     keyWorks,
     pageNum,
@@ -185,9 +200,48 @@ const keyWorkChanged = (search) => {
 }
 
 //权限分配
-const allocationFun = (row) => {
-
+const allocation = (row, action) => {
+  auth.checkedSend = []
+  auth.data = []
+  adminInfo.id = row.id
+  dialogProps.action = action
+  dialogProps.isShow = true;
+  roleAssignList({
+    id: row.id
+  }).then(res => {
+    if (res.code !== 200) {
+      return errorsMsg(res.message);
+    }
+    Object.assign(auth, res.data.result)
+    // 预渲染
+    auth.checked.forEach(item => {
+      auth.checkedSend.push(item.id || -1)
+    })
+    auth.data = concat(auth.unChecked, auth.checked) || []
+  }).catch(err => {
+    return errorsMsg(err.message);
+  })
 }
+
+
+const allocationFun = (data) => {
+  addRoleAssign({
+    id: adminInfo.id,
+    ids: data
+  }).then(res => {
+    if (res.code !== 200) {
+      return errorsMsg(res.message);
+    }
+    successMsg(res.message)
+    dialogProps.isShow = false;
+  }).catch(err => {
+    return errorsMsg(err.message);
+  })
+}
+const handleChange = (ids) => {
+  auth.checkedSend = ids
+}
+
 
 const actionFun = (row, action) => {
   //用于判断是编辑还是删除操作,id为-1时为新增
@@ -229,15 +283,15 @@ const editFun = (adminInfo) => {
     return errorsMsg(err.message)
   })
 }
-const deleteFun = (row,bath) => {
-  if (row.id === -1 || isArray(row.id) &&row.id.length <= 0) {
+const deleteFun = (row, bath) => {
+  if (row.id === -1 || isArray(row.id) && row.id.length <= 0) {
     return errorsMsg("请选择要删除的数据");
   }
-  if (bath){
+  if (bath) {
     row.name = null;
   }
   ElMessageBox.confirm(
-      `是否确定要删除 [ ${ row.name || "批量"} ] ?`,
+      `是否确定要删除 [ ${row.name || "批量"} ] ?`,
       {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -275,10 +329,13 @@ onBeforeMount(() => {
   getRoleList()
 })
 
+
 const submitForm = (formEl, isShow) => {
-  for (const item of form.adminInfo.data) {
-    if (!item.value && item.value.trim().length === 0) {
-      return errorsMsg(`请填写 ${item.label} `)
+  if (dialogProps.action !== "allocation") {
+    for (const item of form.adminInfo.data) {
+      if (!item.value || item.value.trim().length === 0) {
+        return errorsMsg(`请填写 ${item.label} `)
+      }
     }
   }
   switch (dialogProps.action) {
@@ -290,6 +347,7 @@ const submitForm = (formEl, isShow) => {
       }
       break;
     case CONSTANT.ALLOCATION:
+      allocationFun(auth.checkedSend);
       break;
   }
   dialogProps.isShow = isShow;
@@ -299,6 +357,7 @@ const resetForm = (formEl) => {
   form.adminInfo.data.forEach((item) => {
     item.value = ''
   })
+
   if (!formEl) return
   formEl.resetFields()
 }

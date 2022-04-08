@@ -27,4 +27,4 @@ const deleteAuth = (params) => {
     return axios.post(authApi.delete, params)
 };
 
-export {authList, updateAuth, addAuth, deleteAuth}
+export { authList, updateAuth, addAuth, deleteAuth}

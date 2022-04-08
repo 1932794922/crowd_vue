@@ -16,7 +16,7 @@
       node-key="id"
       :props="{
         children: 'children',
-        label: 'name'
+        label:'label'
       }"
       default-expand-all
 
@@ -43,10 +43,10 @@
         <div class="panel-body">
           <el-form
               ref="ruleFormRef"
-              :model="form.menuInfo"
+              :model="form.authInfo"
               label-width="120px"
           >
-            <el-form-item v-for="(item,index) in form.menuInfo.data" :key="index"
+            <el-form-item v-for="(item,index) in form.authInfo.data" :key="index"
                           :label="item.label"
                           :prop=item.prop>
               <el-input v-model="item.value"/>
@@ -74,14 +74,15 @@ const dataSource = ref([])
 const ruleFormRef = ref(null);
 
 const form = reactive({
-  menuInfo: {
+  authInfo: {
     data: [
-      {label: "操作名称", value: '', prop: 'name'},
+      {label: "操作名称", value: '', prop: 'label'},
+      {label: "权限方法", value: '', prop: 'name'},
     ]
   }
 })
 
-const menuInfo = reactive({})
+const authInfo = reactive({})
 
 const dialogProps = reactive({
   isShow: false,
@@ -102,9 +103,9 @@ const actionFun = (row, action) => {
   dialogProps.action = action
 }
 
-const addFun = (menuInfo) => {
-  arrayKeyForObject(form.menuInfo.data, menuInfo);
-  addAuth({...menuInfo}).then(res => {
+const addFun = (authInfo) => {
+  arrayKeyForObject(form.authInfo.data, authInfo);
+  addAuth({...authInfo}).then(res => {
     if (res.code === 200) {
       getAuthList()
       resetForm(ruleFormRef.value)
@@ -118,7 +119,7 @@ const addFun = (menuInfo) => {
 }
 
 const editFun = (adminInfo) => {
-  arrayKeyForObject(form.menuInfo.data, menuInfo);
+  arrayKeyForObject(form.authInfo.data, authInfo);
   updateAuth({...adminInfo}).then(res => {
     if (res.code === 200) {
       getAuthList()
@@ -135,24 +136,24 @@ const editFun = (adminInfo) => {
 const getAuthList = () => {
   authList().then(res => {
     if (res.code === 200) {
-      dataSource.value = res.data.records.children || []
+      dataSource.value = res.data.records || []
     }
   })
 }
 
 const appendBtn = (data, action) => {
   if (data == null) {
-    data = {id: null, pid: null, name: '', router: ''}
+    data = {id: null, categoryId: null, name: '', label: ''}
   }
-  Object.assign(menuInfo, data);
+  Object.assign(authInfo, data);
   dialogProps.isShow = true;
   dialogProps.action = action
 }
 
 const editBtn = (data, action) => {
-  Object.assign(menuInfo, data)
+  Object.assign(authInfo, data)
   // 保存到表单
-  findKeyForValue(form.menuInfo.data, menuInfo);
+  findKeyForValue(form.authInfo.data, authInfo);
   dialogProps.isShow = true;
   dialogProps.action = action
 }
@@ -165,7 +166,7 @@ const removeBtn = (node, data) => {
     return errorsMsg("请先删除子节点")
   }
   ElMessageBox.confirm(
-      `是否确定要删除 [ ${data.name} ] ?`,
+      `是否确定要删除 [ ${data.label} ] ?`,
       {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -191,10 +192,10 @@ const removeBtn = (node, data) => {
 const submitForm = (formEl, isShow) => {
   switch (dialogProps.action) {
     case CONSTANT.UPDATE:
-      editFun(menuInfo);
+      editFun(authInfo);
       break;
     case CONSTANT.ADD:
-      addFun(menuInfo);
+      addFun(authInfo);
       break;
   }
   dialogProps.isShow = isShow;
@@ -202,7 +203,7 @@ const submitForm = (formEl, isShow) => {
 
 
 const resetForm = (formEl) => {
-  form.menuInfo.data.forEach((item) => {
+  form.authInfo.data.forEach((item) => {
     item.value = ''
   })
   if (!formEl) return
