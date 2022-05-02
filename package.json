@@ -8,11 +8,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vueuse/core": "^8.3.1",
     "axios": "^0.26.1",
     "blueimp-md5": "^2.19.0",
     "bootstrap": "3",
     "element-plus": "^2.1.7",
     "lodash": "^4.17.21",
+    "pinia": "^2.0.13",
     "vue": "^3.2.25",
     "vue-nprogress-loading-bar": "^0.0.6",
     "vue-router": "4"

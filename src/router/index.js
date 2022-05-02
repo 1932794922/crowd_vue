@@ -2,6 +2,8 @@ import {createRouter, createWebHashHistory} from 'vue-router'
 
 import staticRoutes from './staticroute'
 import NProgress from 'nprogress'
+import {getSession} from "@/utils/web-utils";
+
 const routes = [...staticRoutes]
 const router = createRouter({
     history: createWebHashHistory(),
@@ -24,13 +26,21 @@ const router = createRouter({
     }
 })
 
+const whiteList = ['/login', '/404', '/401', '/500', '/register', "/admin/login","/"]
+
 router.beforeEach((to, from, next) => {
-    //路由发生变化修改页面title
-    NProgress.start()
+    // NProgress.start()
     if (to.meta.title) {
         document.title = to.meta.title
     }
-    next()
+    if (whiteList.includes(to.path)) {
+        next()
+    } else if (getSession("token")) {
+        next()
+    } else {
+        router.push("/login")
+    }
+
     NProgress.done()
 
 });

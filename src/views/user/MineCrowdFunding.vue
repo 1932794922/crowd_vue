@@ -1,37 +1,11 @@
 <template>
-  <div class="navbar-wrapper">
-    <div class="container">
-      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="#" style="font-size:32px;">尚筹网-创意产品众筹平台</a>
-          </div>
-          <div id="navbar" class="navbar-collapse collapse" style="float:right;">
-            <ul class="nav navbar-nav">
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                    class="glyphicon glyphicon-user"></i> 张三<span class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="member.html"><i class="glyphicon glyphicon-scale"></i> 会员中心</a></li>
-                  <li><a href="#"><i class="glyphicon glyphicon-comment"></i> 消息</a></li>
-                  <li class="divider"></li>
-                  <li><a href="index.html"><i class="glyphicon glyphicon-off"></i> 退出系统</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-
-    </div>
-  </div>
   <div class="container">
     <div class="row clearfix">
       <div class="col-sm-3 col-md-3 column">
         <div class="row">
           <div class="col-md-12">
             <div class="thumbnail" style="    border-radius: 0px;">
-              <img src="~@/assets/~@/assets/img/services-box1.jpg" class="img-thumbnail"
+              <img src="~@/assets/img/services-box1.jpg" class="img-thumbnail"
                    alt="A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera">
               <div class="caption" style="text-align:center;">
                 <h3>
@@ -44,10 +18,10 @@
           </div>
         </div>
         <div class="list-group">
-          <div class="list-group-item" style="cursor:pointer;" onclick="window.location.href='member.html'">
+          <div class="list-group-item" style="cursor:pointer;" @click="goMember">
             资产总览<span class="badge"><i class="glyphicon glyphicon-chevron-right"></i></span>
           </div>
-          <div class="list-group-item active">
+          <div class="list-group-item active" @click="">
             我的众筹<span class="badge"><i class="glyphicon glyphicon-chevron-right"></i></span>
           </div>
         </div>
@@ -59,264 +33,7 @@
           <li role="presentation"><a href="#profile">众筹资产</a></li>
         </ul>
         <div id="myTabContent" class="tab-content" style="margin-top:10px;">
-          <div role="tabpanel" class="tab-pane fade active in" id="home" aria-labelledby="home-tab">
-
-            <ul id="myTab1" class="nav nav-tabs">
-              <li role="presentation" class="active"><a href="#support">我支持的</a></li>
-              <li role="presentation"><a href="#attension">我关注的</a></li>
-              <li role="presentation"><a href="#add">我发起的</a></li>
-              <li class=" pull-right">
-                <button type="button" class="btn btn-warning" onclick="window.location.href='start.html'">
-                  发起众筹
-                </button>
-              </li>
-            </ul>
-            <div id="myTab1" class="tab-content" style="margin-top:10px;">
-              <div role="tabpanel" class="tab-pane fade active in" id="support" aria-labelledby="home-tab">
-                <div class="container-fluid">
-                  <div class="row clearfix">
-                    <div class="col-md-12 column">
-                      <span class="label label-warning">全部</span> <span class="label"
-                                                                        style="color:#000;">已支付</span>
-                      <span class="label " style="color:#000;">未支付</span>
-                    </div>
-                    <div class="col-md-12 column" style="margin-top:10px;padding:0;">
-                      <table class="table table-bordered" style="text-align:center;">
-                        <thead>
-                        <tr style="background-color:#ddd;">
-                          <td>项目信息</td>
-                          <td width="90">支持日期</td>
-                          <td width="120">支持金额（元）</td>
-                          <td width="80">回报数量</td>
-                          <td width="80">交易状态</td>
-                          <td width="120">操作</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                          <td style="vertical-align:middle;">
-                            <div class="thumbnail">
-                              <div class="caption">
-                                <h3>
-                                  活性富氢净水直饮机
-                                </h3>
-                                <p>
-                                  订单编号:2x002231111
-                                </p>
-                                <p>
-                                <div style="float:left;"><i
-                                    class="glyphicon glyphicon-screenshot"
-                                    title="目标金额"></i> 已完成 100%
-                                </div>
-                                <div style="float:right;"><i title="截至日期"
-                                                             class="glyphicon glyphicon-calendar"></i>
-                                  剩余8天
-                                </div>
-                                </p>
-                                <br>
-                                <div class="progress" style="margin-bottom: 4px;">
-                                  <div class="progress-bar progress-bar-danger"
-                                       role="progressbar" aria-valuenow="40"
-                                       aria-valuemin="0" aria-valuemax="100"
-                                       style="width: 40%">
-                                    <span>众筹中</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td style="vertical-align:middle;">2017-05-23 11:31:22</td>
-                          <td style="vertical-align:middle;">1.00<br>(运费：0.00 )</td>
-                          <td style="vertical-align:middle;">1</td>
-                          <td style="vertical-align:middle;">交易关闭</td>
-                          <td style="vertical-align:middle;">
-                            <div class="btn-group-vertical" role="group"
-                                 aria-label="Vertical button group">
-                              <button type="button" class="btn btn-default">删除订单</button>
-                              <button type="button" class="btn btn-default">交易详情</button>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="vertical-align:middle;">
-                            <div class="thumbnail">
-                              <div class="caption">
-                                <h3>
-                                  BAVOSN便携折叠移动电源台灯
-                                </h3>
-                                <p>
-                                  订单编号:2x002231111
-                                </p>
-                                <p>
-                                <div style="float:left;"><i
-                                    class="glyphicon glyphicon-screenshot"
-                                    title="目标金额"></i> 已完成 100%
-                                </div>
-                                <div style="float:right;"><i title="截至日期"
-                                                             class="glyphicon glyphicon-calendar"></i>
-                                  剩余8天
-                                </div>
-                                </p>
-                                <br>
-                                <div class="progress" style="margin-bottom: 4px;">
-                                  <div class="progress-bar progress-bar-success"
-                                       role="progressbar" aria-valuenow="40"
-                                       aria-valuemin="0" aria-valuemax="100"
-                                       style="width: 40%">
-                                    <span>众筹成功</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td style="vertical-align:middle;">2017-05-23 11:31:22</td>
-                          <td style="vertical-align:middle;">1.00<br>(运费：0.00 )</td>
-                          <td style="vertical-align:middle;">1</td>
-                          <td style="vertical-align:middle;">交易关闭</td>
-                          <td style="vertical-align:middle;">
-                            <div class="btn-group-vertical" role="group"
-                                 aria-label="Vertical button group">
-                              <button type="button" class="btn btn-default">删除订单</button>
-                              <button type="button" class="btn btn-default">交易详情</button>
-                            </div>
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div role="tabpanel" class="tab-pane fade" id="attension" aria-labelledby="attension-tab">
-                <div class="container-fluid">
-                  <div class="row clearfix">
-                    <div class="col-md-12 column" style="padding:0;">
-                      <table class="table table-bordered" style="text-align:center;">
-                        <thead>
-                        <tr style="background-color:#ddd;">
-                          <td>项目信息</td>
-                          <td width="120">支持人数</td>
-                          <td width="120">关注人数</td>
-                          <td width="120">操作</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                          <td style="vertical-align:middle;">
-                            <div class="thumbnail">
-                              <div class="caption">
-                                <p>
-                                  BAVOSN便携折叠移动电源台灯
-                                </p>
-                                <p>
-                                  <i class="glyphicon glyphicon-jpy"></i> 已筹集 1000.0元
-                                </p>
-                                <p>
-                                <div style="float:left;"><i
-                                    class="glyphicon glyphicon-screenshot"
-                                    title="目标金额"></i> 已完成 100%
-                                </div>
-                                <div style="float:right;"><i
-                                    class="glyphicon glyphicon-calendar"></i> 剩余2天
-                                </div>
-                                </p>
-                                <br>
-                                <div class="progress" style="margin-bottom: 4px;">
-                                  <div class="progress-bar progress-bar-success"
-                                       role="progressbar" aria-valuenow="40"
-                                       aria-valuemin="0" aria-valuemax="100"
-                                       style="width: 40%">
-                                    <span>众筹中</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td style="vertical-align:middle;">1</td>
-                          <td style="vertical-align:middle;">1</td>
-                          <td style="vertical-align:middle;">
-                            <div class="btn-group-vertical" role="group"
-                                 aria-label="Vertical button group">
-                              <button type="button" class="btn btn-default">取消关注</button>
-                            </div>
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div role="tabpanel" class="tab-pane fade  " id="add" aria-labelledby="add-tab">
-                <div class="container-fluid">
-                  <div class="row clearfix">
-                    <div class="col-md-12 column">
-                      <span class="label label-warning">全部</span> <span class="label"
-                                                                        style="color:#000;">众筹中</span>
-                      <span class="label " style="color:#000;">众筹成功</span> <span class="label "
-                                                                                 style="color:#000;">众筹失败</span>
-                    </div>
-                    <div class="col-md-12 column" style="padding:0;margin-top:10px;">
-                      <table class="table table-bordered" style="text-align:center;">
-                        <thead>
-                        <tr style="background-color:#ddd;">
-                          <td>项目信息</td>
-                          <td width="120">募集金额（元）</td>
-                          <td width="80">当前状态</td>
-                          <td width="120">操作</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                          <td style="vertical-align:middle;">
-                            <div class="thumbnail">
-                              <div class="caption">
-                                <p>
-                                  BAVOSN便携折叠移动电源台灯
-                                </p>
-                                <p>
-                                <div style="float:left;"><i
-                                    class="glyphicon glyphicon-screenshot"
-                                    title="目标金额"></i> 已完成 100%
-                                </div>
-                                <div style="float:right;"><i title="截至日期"
-                                                             class="glyphicon glyphicon-calendar"></i>
-                                  剩余8天
-                                </div>
-                                </p>
-                                <br>
-                                <div class="progress" style="margin-bottom: 4px;">
-                                  <div class="progress-bar progress-bar-success"
-                                       role="progressbar" aria-valuenow="40"
-                                       aria-valuemin="0" aria-valuemax="100"
-                                       style="width: 40%">
-                                    <span>众筹中</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td style="vertical-align:middle;">1.00<br>(运费：0.00 )</td>
-                          <td style="vertical-align:middle;">草稿</td>
-                          <td style="vertical-align:middle;">
-                            <div class="btn-group-vertical" role="group"
-                                 aria-label="Vertical button group">
-                              <button type="button" class="btn btn-default">项目预览</button>
-                              <button type="button" class="btn btn-default">修改项目</button>
-                              <button type="button" class="btn btn-default">删除项目</button>
-                              <button type="button" class="btn btn-default">问题管理</button>
-                            </div>
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
+          <process/>
           <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
             众筹资产
           </div>
@@ -324,6 +41,7 @@
       </div>
     </div>
   </div>
+
   <div class="container" style="margin-top:20px;">
     <div class="row clearfix">
       <div class="col-md-12 column">
@@ -339,16 +57,29 @@
             Copyright ?2017-2017atguigu.com 版权所有
           </div>
         </div>
-
       </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: "MineCrowdFunding"
+<script setup>
+
+import {useRouter} from "vue-router";
+import {ref} from "vue";
+import Process from "@/views/user/component/Process.vue";
+
+const router = useRouter()
+
+const goMember = () => {
+  router.push("/user")
 }
+
+const activeName = ref('first')
+
+const handleClick = (tab, event) => {
+  console.log(tab, event)
+}
+
 </script>
 
 <style scoped>
@@ -359,6 +90,7 @@ export default {
   border-top: 1px solid #ddd;
   text-align: center;
 }
+
 #topcontrol {
   color: #fff;
   z-index: 99;

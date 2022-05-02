@@ -36,11 +36,21 @@ export default defineConfig({
         https: false, // 是否开启 https
         ssr: false, // 服务端渲染
         proxy: {
-            '/api': {
-                target: 'http://localhost:8080/crowd', // 本地多服务
+            '^/api/member|project': {
+                // target: 'http://localhost:8080/crowd', // 本地多服务
+                target: 'http://localhost:80', // 本地多服务
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/api/, '')
             },
+            '^/api/((?!member).)*': {
+                target: 'http://localhost:8080/crowd', // 本地多服务
+                // target: 'http://localhost:80', // 本地多服务
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/api/, '')
+            },
+
+
+
         }
     },
 

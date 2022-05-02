@@ -1,30 +1,4 @@
 <template>
-  <div class="navbar-wrapper">
-    <div class="container">
-      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="index.html" style="font-size:32px;">尚筹网-创意产品众筹平台</a>
-          </div>
-          <div id="navbar" class="navbar-collapse collapse" style="float:right;">
-            <ul class="nav navbar-nav">
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                    class="glyphicon glyphicon-user"></i> 张三<span class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="member.html"><i class="glyphicon glyphicon-scale"></i> 会员中心</a></li>
-                  <li><a href="#"><i class="glyphicon glyphicon-comment"></i> 消息</a></li>
-                  <li class="divider"></li>
-                  <li><a href="index.html"><i class="glyphicon glyphicon-off"></i> 退出系统</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-
-    </div>
-  </div>
   <div class="container">
     <div class="row clearfix">
       <div class="col-sm-3 col-md-3 column">
@@ -47,7 +21,7 @@
             资产总览<span class="badge"><i class="glyphicon glyphicon-chevron-right"></i></span>
           </div>
           <div class="list-group-item " style="cursor:pointer;"
-               onclick="window.location.href='minecrowdfunding.html'">
+              @click="goMineCrowdFunding">
             我的众筹<span class="badge"><i class="glyphicon glyphicon-chevron-right"></i></span>
           </div>
         </div>
@@ -79,7 +53,7 @@
       <div class="col-md-12 column">
         <div id="footer">
           <div class="footerNav">
-            <a rel="nofollow" href="http://www.atguigu.com">关于我们</a> | <a rel="nofollow"
+            <a rel="nofollow" href="http://www.atguigu.com">关于我们</a>  | <a rel="nofollow"
                                                                           href="http://www.atguigu.com">服务条款</a>
             | <a rel="nofollow" href="http://www.atguigu.com">免责声明</a> | <a rel="nofollow"
                                                                             href="http://www.atguigu.com">网站地图</a>
@@ -97,10 +71,23 @@
   <el-button type="success">Success</el-button>
 </template>
 
-<script>
-export default {
-  name: "Member"
+<script setup>
+
+import {useRoute, useRouter} from "vue-router";
+
+
+const route = useRoute();
+
+const router = useRouter()
+
+
+const goMineCrowdFunding = () => {
+  router.push("/user/mine-crowd-funding")
 }
+
+
+
+
 </script>
 
 <style scoped>
@@ -111,6 +98,7 @@ export default {
   border-top: 1px solid #ddd;
   text-align: center;
 }
+
 #topcontrol {
   color: #fff;
   z-index: 99;
@@ -141,4 +129,5 @@ export default {
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
+
 </style>

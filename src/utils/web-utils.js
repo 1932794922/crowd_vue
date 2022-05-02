@@ -66,6 +66,22 @@ const removeAllSession = () => {
 }
 
 
+const setLocalStorage = (key, value) => {
+    window.localStorage.setItem(key, value);
+}
+
+const getLocalStorage = (key) => {
+    return window.localStorage.getItem(key);
+}
+
+const removeLocalStorage = (key) => {
+    window.localStorage.removeItem(key);
+}
+const removeAllLocalStorage = () => {
+    window.localStorage.clear();
+}
+
+
 export {
     successMsg,
     errorsMsg,
@@ -74,5 +90,9 @@ export {
     removeSession,
     removeAllSession,
     findKeyForValue,
-    arrayKeyForObject
+    arrayKeyForObject,
+    setLocalStorage,
+    getLocalStorage,
+    removeLocalStorage,
+    removeAllLocalStorage
 }

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import NProgress from 'nprogress'
-import {errorsMsg, getSession} from "@/utils/web-utils"; // 进度条
+import {errorsMsg, getSession, removeAllSession, setSession, successMsg} from "@/utils/web-utils"; // 进度条
 
 const instance = axios.create({
   baseURL: '/api',
@@ -17,7 +17,7 @@ instance.interceptors.request.use(
     // 在request中展示进度条
     NProgress.start()
     // 携带token
-    config.headers.Authorization = "Bearer ".concat(getSession("sessionId"));
+    config.headers.Authorization = "Bearer ".concat(getSession("token"));
     return config
   },
   error => {
@@ -29,12 +29,24 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(config => {
     // 在response中关闭进度条
     NProgress.done()
+   if (config.data.message === "未登录,请重新登录"||
+       config.data.message === "非法token"){
+     removeAllSession()
+     window.location.reload("/")
+     successMsg(config.data.message)
+   }
+  if (config.data?.success && !config.data?.success){
+    removeAllSession()
+    // 刷新页面
+    window.location.reload()
+  }
+
     return config.data
   },
   err => {
     errorsMsg(err.message)
-    // 将异常返回给用户处理
     NProgress.done()
+    // 将异常返回给用户处理
     return Promise.reject(err)
   })
 
@@ -53,7 +65,15 @@ export default {
       url,
       data,
     })
+  },
 
+  postConfig (url, data, headers) {
+    return instance({
+      method: 'post',
+      url,
+      data,
+      headers
+    })
   },
 
   /**
@@ -84,6 +104,5 @@ export default {
     })
 
   }
-
 }
 

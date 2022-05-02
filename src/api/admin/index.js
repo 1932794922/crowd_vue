@@ -6,7 +6,8 @@ import axios from '@/utils/axios'
  * @return:
  */
 const adminApi = {
-    login: 'admin/login',
+    login: '/login',
+    logout:'/admin/logout',
     list: 'admin/list',
     add: 'admin/add',
     update: 'admin/update',
@@ -22,6 +23,10 @@ const adminApi = {
  */
 const adminLogin = (params) => {
     return axios.post(adminApi.login, params)
+};
+
+const adminLogout = () => {
+    return axios.get(adminApi.logout)
 };
 
 const adminList = (params) => {
@@ -58,4 +63,4 @@ const addAssign = (params) => {
 };
 
 
-export {adminLogin, adminList, updateAdmin, addAdmin, deleteAdmin,AdminAssign,addAssign}
+export {adminLogin, adminList, updateAdmin, addAdmin, deleteAdmin,AdminAssign,addAssign,adminLogout}

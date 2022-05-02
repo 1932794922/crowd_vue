@@ -3,7 +3,6 @@ const staticRoutes = [
         path: '/',
         name: 'Home',
         component: () => import('@/views/home/Home.vue'),
-        redirect: '/admin/login',
         meta: {
             title: "首页"
         }
@@ -32,6 +31,66 @@ const staticRoutes = [
             title: "管理员登录"
         }
     },
+    {
+        path: '/user',
+        name: 'Layout',
+        component: () => import('@/views/user/component/Layout.vue'),
+        redirect: '/user/member',
+        meta: {
+            title: "个人中心"
+        },
+        children: [
+            {
+                path: 'member',
+                name: 'Member',
+                component: () => import('@/views/user/Member.vue'),
+                meta: {
+                    title: "个人中心"
+                }
+            },
+            {
+                path: 'mine-crowd-funding',
+                name: 'MineCrowdFunding',
+                component: () => import('@/views/user/MineCrowdFunding.vue'),
+                meta: {
+                    title: "我的众筹"
+                }
+            },
+            {
+                path: 'project-list',
+                name: 'ProjectList',
+                component: () => import('@/views/project/ProjectList.vue'),
+            },
+
+            {
+                path: 'start',
+                name: 'Start',
+                component: () => import('@/views/start/Start.vue'),
+            },
+            {
+                path: 'start1',
+                name: 'Start1',
+                component: () => import('@/views/start/Start1.vue'),
+            },
+            {
+                path: 'start2',
+                name: 'Start2',
+                component: () => import('@/views/start/Start2.vue'),
+            },
+            {
+                path: 'start3',
+                name: 'Start3',
+                component: () => import('@/views/start/Start3.vue'),
+            },
+            {
+                path: 'start4',
+                name: 'Start4',
+                component: () => import('@/views/start/Start4.vue'),
+            },
+        ]
+
+    },
+
     {
         path: '/admin/main',
         name: 'MainDash',
@@ -163,32 +222,13 @@ const staticRoutes = [
         ]
     },
     {
-        path: '/project-list',
-        name: 'ProjectList',
-        component: () => import('@/views/project/ProjectList.vue'),
-    },
-    {
-        path: '/start',
-        name: 'start',
-        component: () => import('@/views/start/Start.vue'),
-    },
-    {
-        path: '/mine-crowd-funding',
-        name: 'MineCrowdFunding',
-        component: () => import('@/views/user/MineCrowdFunding.vue'),
-    },
-    {
-        path: '/member',
-        name: 'Member',
-        component: () => import('@/views/user/Member.vue'),
-    },
-    {
         path: '/:pathMatch(.*)*',
         name: '404',
         component: () => import('@/views/error/404.vue'),
         meta: {
             title: '页面失效啦'
         }
-    }]
+    }
+]
 
 export default staticRoutes

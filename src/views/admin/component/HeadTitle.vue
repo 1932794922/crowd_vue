@@ -9,7 +9,7 @@
           <li style="padding-top:8px;">
             <div class="btn-group">
               <button type="button" class="btn btn-default btn-success dropdown-toggle" data-toggle="dropdown">
-                <i class="glyphicon glyphicon-user"></i> 张三 <span class="caret"></span>
+                <i class="glyphicon glyphicon-user"></i> {{userName}} <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" role="menu">
                 <li><i class="glyphicon glyphicon-cog"></i>个人设置</li>
@@ -37,7 +37,9 @@
 
 
 import {useRouter} from "vue-router";
-import {removeAllSession} from "@/utils/web-utils";
+import {errorsMsg, getSession, removeAllSession, successMsg} from "@/utils/web-utils";
+
+import {adminLogout} from "@/api/admin"
 
 const router = useRouter()
 
@@ -52,15 +54,22 @@ const logout = () => {
       }
   )
       .then(() => {
-        removeAllSession("sessionId");
-        router.push('/')
-        ElMessage({
-          type: 'success',
-          message: '退出成功',
-          center: true
-        })
+        adminLogout().then(res => {
+          if (res.code !== 200) {
+            router.push('/')
+            removeAllSession()
+            return errorsMsg(res.message);
+          }
+          console.log(res);
+          router.push('/')
+          removeAllSession()
+          return successMsg(res.message);
+        }).catch(err => {
+        });
       })
 }
+
+let userName = getSession("userName")
 
 
 </script>

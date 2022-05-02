@@ -8,10 +8,31 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse" style="float:right;">
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="login.html">登录</a></li>
-              <li><a href="reg.html">注册</a></li>
+              <template v-if="!user.isLogin">
+                <li>
+                  <router-link to="/login">登录</router-link>
+                </li>
+                <li>
+                  <router-link to="/register">注册</router-link>
+                </li>
+              </template>
+              <template v-else>
+                <li>
+                  <h4>{{ user.userName }}</h4>
+                </li>
+                <li>
+                  <h4 class="logout" @click="logoutBtn">退出</h4>
+                </li>
+                <li>
+                  <router-link class="logout" :to="{name:'Member',params:{user:user.userName}
+                  }">个人中心
+                  </router-link>
+                </li>
+              </template>
               <li><a>|</a></li>
-              <li><a href="admin-login.html">管理员入口</a></li>
+              <li>
+                <router-link to="/admin/login">管理员入口</router-link>
+              </li>
             </ul>
           </div>
         </div>
@@ -506,7 +527,7 @@
     <div class="container">
       <div class="row clearfix">
         <div class="col-md-12 column">
-          <div class="box ui-draggable" id="mainBox">
+          <div class="box ui-draggable">
             <div class="mHd" style="">
               <div class="path">
                 <a href="projects.html">更多...</a>
@@ -669,16 +690,75 @@
   </div>
 
 </template>
-<script>
-export default {
-  name: "Home"
+<script setup>
+
+import {onMounted, reactive} from "vue";
+import {memberLogout, queryMember} from "@/api/member/user";
+import {errorsMsg, getSession, removeAllSession, removeSession, successMsg} from "@/utils/web-utils";
+import {useRouter} from "vue-router";
+import {userStore} from "@/store/userstore";
+
+
+const router = useRouter()
+
+const user = reactive({
+  userName: '',
+  isLogin: false
+});
+
+
+const userStores = userStore();
+
+const logoutBtn = () => {
+  ElMessageBox.confirm(
+      '是否要退出登录?',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+  )
+      .then(() => {
+        memberLogout().then(res => {
+          if (res.code !== 200) {
+            return errorsMsg(res.message)
+          }
+          removeAllSession();
+          user.isLogin = false;
+          successMsg(res.message)
+        })
+      })
 }
+
+onMounted(() => {
+  if (getSession("userName")){
+    user.userName = getSession("userName");
+    user.isLogin = true;
+  }
+})
+
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 h3 {
   font-weight: bold;
+}
+
+.navbar-right {
+  h4 {
+    color: #9acfea;
+    margin-top: 15px;
+    padding-left: 10px;
+  }
+
+  .logout {
+    cursor: pointer;
+  }
+
+  .logout:hover {
+    color: #00CCFF;
+  }
 }
 
 #footer {
@@ -764,9 +844,16 @@ h3 {
   background: #EAE6DD;
 }
 
+#sideMenu .bd li span {
+  display: block;
+  background: #EAE6DD;
+}
+
+
 #sideMenu .bd li a:hover {
   background: #D5CFBF;
 }
+
 
 /* 列表页 */
 #mainBox {
@@ -819,7 +906,6 @@ h3 {
 }
 
 .newsList li {
-  background: url("../images/share/point.png") no-repeat 2px 14px;
   padding-left: 10px;
   height: 30px;
   line-height: 30px;

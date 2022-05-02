@@ -38,7 +38,14 @@
 import {adminLogin} from "@/api/admin";
 import {reactive, ref} from "vue";
 import md5 from "blueimp-md5"
-import {errorsMsg, setSession, successMsg} from '@/utils/web-utils'
+import {
+  errorsMsg,
+  removeAllLocalStorage,
+  removeAllSession,
+  removeSession,
+  setSession,
+  successMsg
+} from '@/utils/web-utils'
 import {useRouter} from "vue-router";
 
 const formRef = ref(null);
@@ -70,13 +77,15 @@ const router = useRouter()
  * @param params 用户名和密码
  */
 const adminLoginFun = (params) => {
+  removeAllSession();
+  removeAllLocalStorage()
   adminLogin(params).then((res) => {
     if (res.code !== 200) {
       return errorsMsg(res.message)
     }
-    console.log(res)
     router.push("/admin/main")
-    setSession("sessionId",res.data.sessionId)
+    setSession("token",res.data.token)
+    setSession("userName",res.data.userName)
     return successMsg(res.message);
   })
 }

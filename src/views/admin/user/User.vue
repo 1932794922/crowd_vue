@@ -68,7 +68,7 @@
               :rules="form.rules"
               label-width="120px"
           >
-            <el-form-item v-for="(item,index) in form.adminInfo.data" :key="index"
+            <el-form-item   v-for="(item,index) in form.adminInfo.data" :key="index"
                           :label="item.label"
                           :prop=item.prop>
               <el-input :type="item.type"
@@ -150,7 +150,7 @@ const form = reactive({
       {label: "登陆账号", value: '', prop: 'loginAcct'},
       {label: "用户名称", value: '', prop: 'userName'},
       {label: "邮箱地址", value: '', prop: 'email'},
-      {label: "密码", value: '', prop: 'userPswd', type: 'password'},
+      {label: "密码", value: '', prop: 'userPswd', disabled:true  ,type: 'password'},
     ]
   }
 })

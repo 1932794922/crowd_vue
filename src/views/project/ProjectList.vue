@@ -8,16 +8,17 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav">
                 <li>
-                  <a rel="nofollow" href="index.html"><i class="glyphicon glyphicon-home"></i> 众筹首页</a>
+                  <router-link :to="{path:'/'}"><i class="glyphicon glyphicon-home"></i> 众筹首页</router-link>
                 </li>
                 <li class="active">
-                  <a rel="nofollow" href="javascript:;"><i class="glyphicon glyphicon-th-large"></i> 项目总览</a>
+                  <router-link :to="{name:'ProjectList'}"><i class="glyphicon glyphicon-th-large"></i> 项目总览</router-link>
+                </li>
+                <li >
+                  <router-link :to="{name:'Start'}"><i class="glyphicon glyphicon-edit"></i> 发起项目</router-link >
                 </li>
                 <li>
-                  <a rel="nofollow" href="start.html"><i class="glyphicon glyphicon-edit"></i> 发起众筹</a>
-                </li>
-                <li>
-                  <a rel="nofollow" href="minecrowdfunding.html"><i class="glyphicon glyphicon-user"></i> 我的众筹</a>
+                  <router-link :to="{name:'Member'}" ><i class="glyphicon glyphicon-user"></i>
+                    我的众筹</router-link>
                 </li>
               </ul>
             </div>

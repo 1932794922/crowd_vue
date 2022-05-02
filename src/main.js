@@ -16,6 +16,8 @@ import 'nprogress/nprogress.css'
 
 import * as Elicons from '@element-plus/icons-vue';
 
+import { createPinia } from 'pinia'
+
 const app = createApp(App)
 
 //全局注册element plus icon
@@ -23,4 +25,4 @@ Object.keys(Elicons).forEach((key) => {
     app.component(key, Elicons[key]);
 });
 
-app.use(router).mount('#app')
+app.use(router).use(createPinia()).mount('#app')
