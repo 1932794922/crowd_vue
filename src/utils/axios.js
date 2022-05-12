@@ -33,7 +33,7 @@ instance.interceptors.response.use(config => {
        config.data.message === "非法token"){
      removeAllSession()
      window.location.reload("/")
-     successMsg(config.data.message)
+     return  errorsMsg(config.data.message)
    }
   if (config.data?.success && !config.data?.success){
     removeAllSession()

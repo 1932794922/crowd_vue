@@ -1,7 +1,8 @@
 <template>
+  <div>
   <el-button type="primary" @click="sponsorCrowdBtn" class="sponsor-btn">发起众筹</el-button>
-  <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-    <el-tab-pane label="我支持的" name="first">
+    <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+      <el-tab-pane label="我支持的" name="first">
       <div class="container-fluid">
         <div class="row clearfix">
           <div class="col-md-12 column">
@@ -117,7 +118,6 @@
 
       </div>
     </el-tab-pane>
-
     <el-tab-pane label="我关注的" name="second">
       <div class="tab-pane">
         <div class="container-fluid">
@@ -250,6 +250,8 @@
       </div>
     </el-tab-pane>
   </el-tabs>
+
+  </div>
 </template>
 
 <script setup>
@@ -281,5 +283,6 @@ const handleClick = (tab, event) => {
   right: 0;
   z-index: 1;
 }
+
 
 </style>

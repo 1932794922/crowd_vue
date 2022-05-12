@@ -4,8 +4,17 @@ const staticRoutes = [
         name: 'Home',
         component: () => import('@/views/home/Home.vue'),
         meta: {
-            title: "首页"
+            title: "首页",
+            keepAlive: true
         }
+    },
+    {
+        path: '/project/list',
+        name: 'ProjectList',
+        component: () => import('@/views/product/ProjectList.vue'),
+        meta: {
+            title: "项目列表"
+        },
     },
     {
         path: '/login',
@@ -57,11 +66,21 @@ const staticRoutes = [
                 }
             },
             {
+                path: 'detail',
+                name: 'Detail',
+                component: () => import('@/views/product/Detail.vue'),
+                meta: {
+                    title: "项目详情"
+                },
+            },
+            {
                 path: 'project-list',
                 name: 'ProjectList',
-                component: () => import('@/views/project/ProjectList.vue'),
+                component: () => import('@/views/product/ProjectList.vue'),
+                meta: {
+                    title: "众筹项目"
+                }
             },
-
             {
                 path: 'start',
                 name: 'Start',
@@ -71,16 +90,25 @@ const staticRoutes = [
                 path: 'start1',
                 name: 'Start1',
                 component: () => import('@/views/start/Start1.vue'),
+                meta: {
+                    keepAlive: true
+                }
             },
             {
                 path: 'start2',
                 name: 'Start2',
                 component: () => import('@/views/start/Start2.vue'),
+                meta: {
+                    keepAlive: true
+                }
             },
             {
                 path: 'start3',
                 name: 'Start3',
                 component: () => import('@/views/start/Start3.vue'),
+                meta: {
+                    keepAlive: true
+                }
             },
             {
                 path: 'start4',

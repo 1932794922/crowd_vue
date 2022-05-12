@@ -26,6 +26,13 @@
 
 <script setup>
 
+import {onMounted, reactive, ref} from "vue";
+import {uploadImage} from "@/api/upload/upload";
+import {errorsMsg, successMsg} from "@/utils/web-utils";
+
+import {genFileId} from 'element-plus'
+
+
 const props = defineProps({
   uploadLimit: {
     type: Number,
@@ -36,13 +43,6 @@ const props = defineProps({
     default: "",
   },
 })
-
-import {onMounted, reactive, ref} from "vue";
-import {uploadImage} from "@/api/upload/upload";
-import {errorsMsg, successMsg} from "@/utils/web-utils";
-
-import {genFileId} from 'element-plus'
-
 
 const uploadRef = ref();
 

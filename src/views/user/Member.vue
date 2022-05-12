@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div class="container">
     <div class="row clearfix">
       <div class="col-sm-3 col-md-3 column">
@@ -67,8 +68,7 @@
       </div>
     </div>
   </div>
-
-  <el-button type="success">Success</el-button>
+  </div>
 </template>
 
 <script setup>

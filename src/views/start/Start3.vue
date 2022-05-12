@@ -1,6 +1,5 @@
 <template>
   <div class="container theme-showcase" role="main">
-
     <div class="container">
       <div class="row clearfix">
         <div class="col-md-12 column">
@@ -11,14 +10,16 @@
                   <router-link :to="{path:'/'}"><i class="glyphicon glyphicon-home"></i> 众筹首页</router-link>
                 </li>
                 <li>
-                  <router-link :to="{name:'ProjectList'}"><i class="glyphicon glyphicon-th-large"></i> 项目总览</router-link>
+                  <router-link :to="{name:'ProjectList'}"><i class="glyphicon glyphicon-th-large"></i> 项目总览
+                  </router-link>
                 </li>
                 <li class="active">
-                  <router-link :to="{name:'Start'}"><i class="glyphicon glyphicon-edit"></i> 发起项目</router-link >
+                  <router-link :to="{name:'Start'}"><i class="glyphicon glyphicon-edit"></i> 发起项目</router-link>
                 </li>
                 <li>
-                  <router-link :to="{name:'Member'}" ><i class="glyphicon glyphicon-user"></i>
-                    我的众筹</router-link>
+                  <router-link :to="{name:'Member'}"><i class="glyphicon glyphicon-user"></i>
+                    我的众筹
+                  </router-link>
                 </li>
               </ul>
             </div>
@@ -26,18 +27,18 @@
         </div>
       </div>
     </div>
-
-
     <div class="container">
       <div class="row clearfix">
         <div class="col-md-12 column">
-          <div class="panel panel-default" >
+          <div class="panel panel-default">
             <div class="panel-heading" style="text-align:center;">
               <div class="container-fluid">
                 <div class="row clearfix">
                   <div class="col-md-3 column">
-                    <div class="progress" style="height:50px;border-radius:0;    position: absolute;width: 75%;right:49px;">
-                      <div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;height:50px;">
+                    <div class="progress"
+                         style="height:50px;border-radius:0;    position: absolute;width: 75%;right:49px;">
+                      <div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="60"
+                           aria-valuemin="0" aria-valuemax="100" style="width: 100%;height:50px;">
                         <div style="font-size:16px;margin-top:15px;">1. 项目及发起人信息</div>
                       </div>
                     </div>
@@ -51,7 +52,8 @@
                   </div>
                   <div class="col-md-3 column">
                     <div class="progress" style="height:50px;border-radius:0;position: absolute;width: 75%;right:49px;">
-                      <div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;height:50px;">
+                      <div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="60"
+                           aria-valuemin="0" aria-valuemax="100" style="width: 100%;height:50px;">
                         <div style="font-size:16px;margin-top:15px;">2. 回报设置</div>
                       </div>
                     </div>
@@ -65,7 +67,8 @@
                   </div>
                   <div class="col-md-3 column">
                     <div class="progress" style="height:50px;border-radius:0;position: absolute;width: 75%;right:49px;">
-                      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;height:50px;">
+                      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60"
+                           aria-valuemin="0" aria-valuemax="100" style="width: 100%;height:50px;">
                         <div style="font-size:16px;margin-top:15px;">3. 确认信息</div>
                       </div>
                     </div>
@@ -79,7 +82,8 @@
                   </div>
                   <div class="col-md-3 column">
                     <div class="progress" style="height:50px;border-radius:0;">
-                      <div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;height:50px;">
+                      <div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="60"
+                           aria-valuemin="0" aria-valuemax="100" style="width: 100%;height:50px;">
                         <div style="font-size:16px;margin-top:15px;">4. 完成</div>
                       </div>
                     </div>
@@ -103,19 +107,42 @@
 
                     <div class="row clearfix">
                       <div class="col-md-6 column">
-                        <form role="form">
+                        <el-form :model="confirmInfo"
+                                 ref="formRef"
+                                 :rules="rules"
+                                 hide-required-asterisk
+                        >
                           <div class="form-group">
-                            <label for="exampleInputEmail1">易付宝企业账号：</label><input type="email" class="form-control" id="exampleInputEmail1" />
+                            <label>易付宝企业账号：</label>
+                            <el-form-item
+                                prop="payNum"
+                            >
+                            <el-input
+                                v-model="confirmInfo.payNum"
+                                oninput="value=value.replace(/[^\d.]/g,'')"
+                                type="text"/>
+                            </el-form-item>
+                            <br/>
                           </div>
                           <div class="form-group">
-                            <label for="exampleInputPassword1">法人身份证号：</label><input type="password" class="form-control" id="exampleInputPassword1" />
+                            <label>法人身份证号：</label>
+                            <el-form-item
+                                prop="cardNum"
+                            >
+                            <el-input
+                                v-model="confirmInfo.cardNum"
+                                oninput="value=value.replace(/[^\d.]/g,'')"
+                                type="text"/>
+                            </el-form-item>
+                            <br/>
                           </div>
-                        </form>
+                        </el-form>
                       </div>
                       <div class="col-md-6 column">
                         <div class="panel panel-default">
                           <div class="panel-body" style="padding:40px;">
-                            <i class="glyphicon glyphicon-user"></i> 易购账户名：18801282948<br><br><span style="margin-left:60px;">您正在使用该账号发起众筹项目</span>
+                            <i class="glyphicon glyphicon-user"></i> 易购账户名：18801282948<br><br><span
+                              style="margin-left:60px;">您正在使用该账号发起众筹项目</span>
                           </div>
                         </div>
                       </div>
@@ -126,43 +153,90 @@
             </div>
             <div class="panel-footer" style="text-align:center;">
               <button type="button" class="btn  btn-default btn-lg" @click="perStep">上一步</button>
-              <button type="button" class="btn  btn-warning btn-lg"  @click="nextStep">提交</button>
-              <a class="btn" > 保存草稿 </a>
+              <button type="button" class="btn  btn-warning btn-lg" @click="nextStep(formRef)">提交</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-
     <Footer/>
-
-  </div> <!-- /container -->
+  </div>
 </template>
 
 <script setup>
 
 import {useRouter} from "vue-router";
+import {reactive, ref} from "vue";
+import {projectConfirm} from "@/api/member/memberProject";
+import {errorsMsg, successMsg} from "@/utils/web-utils";
 
 const router = useRouter();
+
+const formRef = ref();
+
+const confirmInfo = reactive({
+  payNum: '',
+  cardNum: '',
+})
+
+const rules = reactive({
+  payNum: [
+    {
+      required: true,
+      message: '请输入易付宝企业账号',
+      trigger: 'blur',
+    },
+  ],
+  cardNum: [
+    {
+      required: true,
+      message: '请输入法人身份证号',
+      trigger: 'blur',
+    },
+  ],
+})
 
 const perStep = () => {
   router.push({name: "Start2"})
 }
 
-const nextStep = () => {
-  router.push({name: "Start4"})
+const nextStep = async (formRef) => {
+  if (!formRef) return
+  await formRef.validate((valid) => {
+    if (valid) {
+      projectConfirm({...confirmInfo}).then(res => {
+        if (res.code === 301){
+          errorsMsg(res.message)
+          return router.push({name: "Start1"})
+        }
+        if (res.code !== 200) {
+          return errorsMsg(res.message)
+        }
+        successMsg(res.message)
+        router.push({name: "Start4"})
+      }).catch(err => {
+
+      })
+    } else {
+      console.log('error submit!')
+      return false
+    }
+  })
+
+
+
 }
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #footer {
   padding: 15px 0;
   background: #fff;
   border-top: 1px solid #ddd;
   text-align: center;
 }
+
 #topcontrol {
   color: #fff;
   z-index: 99;
@@ -197,23 +271,31 @@ const nextStep = () => {
 .label-type, .label-status, .label-order {
   background-color: #fff;
   color: #f60;
-  padding : 5px;
+  padding: 5px;
   border: 1px #f60 solid;
 }
-#typeList  :not(:first-child) {
-  margin-top:20px;
+
+#typeList :not(:first-child) {
+  margin-top: 20px;
 }
+
 .label-txt {
-  margin:10px 10px;
-  border:1px solid #ddd;
-  padding : 4px;
-  font-size:14px;
+  margin: 10px 10px;
+  border: 1px solid #ddd;
+  padding: 4px;
+  font-size: 14px;
 }
+
 .panel {
-  border-radius:0;
+  border-radius: 0;
 }
 
 .progress-bar-default {
   background-color: #ddd;
+}
+.panel-footer{
+  button{
+    margin-right: 30px;
+  }
 }
 </style>

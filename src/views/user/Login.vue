@@ -1,55 +1,56 @@
 <template>
-  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-      <div class="navbar-header">
-        <div><a class="navbar-brand" href="index.html" style="font-size:32px;">尚筹网-创意产品众筹平台</a></div>
+  <div>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <div><a class="navbar-brand" href="index.html" style="font-size:32px;">尚筹网-创意产品众筹平台</a></div>
+        </div>
       </div>
+    </nav>
+    <div class="container">
+      <el-row justify="center">
+        <el-col :span="10">
+          <el-form
+              ref="formRef"
+              :model="formData"
+              label-width="100px"
+              :rules="rules"
+          >
+            <h2 class="form-signin-heading"><i class="glyphicon glyphicon-log-in"></i> 用户登录</h2>
+            <div class="form-group has-success has-feedback">
+              <el-form-item
+                  label="登录账号"
+                  prop="loginAcct"
+              >
+                <el-input
+                    size="large"
+                    v-model="formData.loginAcct"
+                    placeholder="请输入登录账号"
+                />
+              </el-form-item>
+              <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-success has-feedback">
+              <el-form-item
+                  label="登录密码"
+                  prop="userPassword"
+              >
+                <el-input
+                    size="large"
+                    v-model="formData.userPassword"
+                    placeholder="请输入登录密码"
+                />
+              </el-form-item>
+              <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+          </el-form>
+          <el-button type="warning" @click="registerBtn">我要注册</el-button>
+          <el-button type="primary" @click="loginBtn(formRef)">登录</el-button>
+        </el-col>
+      </el-row>
+
+
     </div>
-  </nav>
-
-  <div class="container">
-    <el-row justify="center">
-      <el-col :span="10">
-        <el-form
-            ref="formRef"
-            :model="formData"
-            label-width="100px"
-            :rules="rules"
-        >
-          <h2 class="form-signin-heading"><i class="glyphicon glyphicon-log-in"></i> 用户登录</h2>
-          <div class="form-group has-success has-feedback">
-            <el-form-item
-                label="登录账号"
-                prop="loginAcct"
-            >
-              <el-input
-                  size="large"
-                  v-model="formData.loginAcct"
-                  placeholder="请输入登录账号"
-              />
-            </el-form-item>
-            <span class="glyphicon glyphicon-user form-control-feedback"></span>
-          </div>
-          <div class="form-group has-success has-feedback">
-            <el-form-item
-                label="登录密码"
-                prop="userPassword"
-            >
-              <el-input
-                  size="large"
-                  v-model="formData.userPassword"
-                  placeholder="请输入登录密码"
-              />
-            </el-form-item>
-            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-          </div>
-        </el-form>
-        <el-button type="warning" @click="registerBtn">我要注册</el-button>
-        <el-button type="primary" @click="loginBtn(formRef)">登录</el-button>
-      </el-col>
-    </el-row>
-
-
   </div>
 </template>
 
@@ -111,7 +112,7 @@ const loginBtn = async (formEl) => {
     if (valid) {
       removeAllSession();
       removeAllLocalStorage()
-     await memberLogin({
+      await memberLogin({
         loginAcct: formData.loginAcct,
         userPassword: md5(formData.userPassword)
       }).then(res => {

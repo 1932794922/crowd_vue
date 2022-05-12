@@ -82,6 +82,16 @@ const removeAllLocalStorage = () => {
 }
 
 
+/**
+ * 时间戳转时间
+ */
+const formatTime = (dataTime) => {
+    if (!dataTime) {
+        dataTime = new Date().getTime()
+    }
+    return new Date(parseInt(dataTime)).toLocaleString().replace(/\//g, "-").replace(/\s/g, ":")
+}
+
 export {
     successMsg,
     errorsMsg,
@@ -94,5 +104,6 @@ export {
     setLocalStorage,
     getLocalStorage,
     removeLocalStorage,
-    removeAllLocalStorage
+    removeAllLocalStorage,
+    formatTime
 }

@@ -116,15 +116,24 @@
                         项目信息
                       </h3>
                     </div>
-                    <el-form class="form-horizontal">
+                    <el-form
+                        ref="formRef"
+                        :rules="rules"
+                        :model="dynamicTags.form"
+                        hide-required-asterisk
+                        class="form-horizontal">
                       <div class="form-group">
                         <label class="col-sm-2 control-label">分类信息</label>
                         <div class="col-sm-10">
+                          <el-form-item
+                              prop="typeIdList"
+                          >
                           <el-checkbox-group v-model="dynamicTags.typeIdListValue">
                             <template v-for="(item,index) in dynamicTags.typeIdList " :key="index">
                               <el-checkbox :label="item.label">{{ item.title }}</el-checkbox>
                             </template>
                           </el-checkbox-group>
+                          </el-form-item>
                         </div>
                       </div>
                       <div class="form-group">
@@ -156,38 +165,52 @@
                       <div class="form-group">
                         <label class="col-sm-2 control-label">项目名称</label>
                         <div class="col-sm-10">
-                          <el-input v-model="dynamicTags.form.projectName" type="text"/>
+                          <el-form-item
+                              prop="projectName"
+                          >
+                            <el-input v-model="dynamicTags.form.projectName" type="text"/>
+                          </el-form-item>
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="col-sm-2 control-label">一句话简介</label>
                         <div class="col-sm-10">
-                          <el-input
-                              v-model="dynamicTags.form.projectDescription"
-                              type="textarea" :autosize="
+                          <el-form-item
+                              prop="projectDescription"
+                          >
+                            <el-input
+                                v-model="dynamicTags.form.projectDescription"
+                                type="textarea" :autosize="
                             { minRows: 2, maxRows: 6 }
                           "/>
+                          </el-form-item>
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="col-sm-2 control-label">筹资金额（元）</label>
                         <div class="col-sm-10">
-                          <el-input
-                              v-model.number="dynamicTags.form.money"
-                              oninput="value=value.replace(/[^\d.]/g,'')"
-                              type="text" style="width:100px;"/>
-                          <br/>
+                          <el-form-item
+                              prop="projectDescription"
+                          >
+                            <el-input
+                                v-model.number="dynamicTags.form.money"
+                                oninput="value=value.replace(/[^\d.]/g,'')"
+                                type="text" style="width:100px;"/>
+                          </el-form-item>
                           <label class="control-label">筹资金额不能低于100元,不能高于1000000000元</label>
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="col-sm-2 control-label">筹资天数（天）</label>
                         <div class="col-sm-10">
-                          <el-input
-                              v-model.number="dynamicTags.form.day"
-                              oninput="value=value.replace(/[^\d.]/g,'')"
-                              type="text" style="width:100px;"/>
-                          <br/>
+                          <el-form-item
+                              prop="day"
+                          >
+                            <el-input
+                                v-model.number="dynamicTags.form.day"
+                                oninput="value=value.replace(/[^\d.]/g,'')"
+                                type="text" style="width:100px;"/>
+                          </el-form-item>
                           <label class="control-label">一般10-90天，建议30天</label>
                         </div>
                       </div>
@@ -211,57 +234,70 @@
                           <label class="control-label">支持jpg、jpeg、png、gif格式，大小不超过2M，建议尺寸：宽740px</label>
                         </div>
                       </div>
-                    </el-form>
-                  </div>
-                  <div class="col-md-12 column">
-                    <div class="page-header" style="    border-bottom-style: dashed;">
-                      <h3>
-                        发起人信息
-                      </h3>
-                    </div>
-                    <form class="form-horizontal">
-                      <div class="form-group">
-                        <label class="col-sm-2 control-label">自我介绍</label>
-                        <div class="col-sm-10">
-                          <input
-                              v-model="dynamicTags.form.memberLaunchInfoVO.descriptionSimple"
-                              type="text" class="form-control" placeholder="一句话自我介绍，不超过40字">
+                      <div class="col-md-12 column">
+                        <div class="page-header" style="    border-bottom-style: dashed;">
+                          <h3>
+                            发起人信息
+                          </h3>
                         </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="col-sm-2 control-label">详细自我介绍</label>
-                        <div class="col-sm-10">
-                          <el-input
-                              v-model="dynamicTags.form.memberLaunchInfoVO.descriptionDetail"
-                              placeholder="向支持者详细介绍你自己或你的团队及项目背景，让支持者在最短时间内了解你，不超过160字" type="textarea" :autosize="
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label">自我介绍</label>
+                          <div class="col-sm-10">
+                            <el-form-item
+                                prop="memberLaunchInfoVO.descriptionSimple"
+                            >
+                              <el-input
+                                  v-model="dynamicTags.form.memberLaunchInfoVO.descriptionSimple"
+                                  type="text" placeholder="一句话自我介绍，不超过40字">
+                              </el-input>
+                            </el-form-item>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label">详细自我介绍</label>
+                          <div class="col-sm-10">
+                            <el-form-item
+                                prop="memberLaunchInfoVO.descriptionDetail"
+                            >
+                              <el-input
+                                  v-model="dynamicTags.form.memberLaunchInfoVO.descriptionDetail"
+                                  placeholder="向支持者详细介绍你自己或你的团队及项目背景，让支持者在最短时间内了解你，不超过160字" type="textarea" :autosize="
                             { minRows: 4 }
                           "/>
+                            </el-form-item>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label">联系电话</label>
+                          <div class="col-sm-10">
+                            <el-form-item
+                                prop="memberLaunchInfoVO.phoneNum">
+                              <el-input
+                                  v-model="dynamicTags.form.memberLaunchInfoVO.phoneNum"
+                                  type="text" placeholder="此信息不会显示在项目页面"/>
+                            </el-form-item>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label">客服电话</label>
+                          <div class="col-sm-10">
+                            <el-form-item
+                                prop="memberLaunchInfoVO.serviceNum">
+                              <el-input
+                                  v-model="dynamicTags.form.memberLaunchInfoVO.serviceNum"
+                                  type="text" placeholder="此信息显示在项目页面"/>
+                            </el-form-item>
+                          </div>
                         </div>
                       </div>
-                      <div class="form-group">
-                        <label class="col-sm-2 control-label">联系电话</label>
-                        <div class="col-sm-10">
-                          <el-input
-                              v-model="dynamicTags.form.memberLaunchInfoVO.phoneNum"
-                              type="text" placeholder="此信息不会显示在项目页面"/>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="col-sm-2 control-label">客服电话</label>
-                        <div class="col-sm-10">
-                          <el-input
-                              v-model="dynamicTags.form.memberLaunchInfoVO.serviceNum"
-                              type="text" placeholder="此信息显示在项目页面"/>
-                        </div>
-                      </div>
-                    </form>
+                    </el-form>
                   </div>
                 </div>
               </div>
             </div>
             <div class="panel-footer" style="text-align:center;">
               <button type="button" class="btn  btn-warning btn-lg"
-                      @click="nextStep">下一步
+                      @click="nextStep(formRef)">下一步
               </button>
             </div>
           </div>
@@ -281,29 +317,101 @@ import {nextTick, reactive, ref} from "vue";
 import Upload from "@/views/start/component/Upload.vue";
 import Footer from "@/components/Footer.vue";
 import {isEmpty} from "lodash/lang";
+import {errorsMsg} from "@/utils/web-utils";
 
 const router = useRouter();
 
+const formRef = ref(null);
+
+const rules = reactive({
+  typeIdListValue: [
+    {
+      required: true,
+      message: '请选择项目类型',
+      trigger: 'blur',
+      type: 'array'
+    },
+  ],
+  projectName: [
+    {
+      required: true,
+      message: '请输入项目名称',
+      trigger: 'blur',
+    },
+  ],
+  projectDescription: [
+    {
+      required: true,
+      message: '请输入项目描述',
+      trigger: 'blur',
+    },
+  ],
+  money: [
+    {
+      required: true,
+      message: '请输入筹资金额',
+      trigger: 'blur',
+    },
+  ],
+  day: [
+    {
+      required: true,
+      message: '请输入筹资天数',
+      trigger: 'blur',
+    },
+  ],
+  "memberLaunchInfoVO.descriptionSimple": [
+    {
+      required: true,
+      message: '请输入自我介绍',
+      trigger: 'blur',
+    },
+  ],
+  "memberLaunchInfoVO.descriptionDetail": [
+    {
+      required: true,
+      message: '请输入详细介绍',
+      trigger: 'blur',
+    },
+  ],
+  "memberLaunchInfoVO.phoneNum": [
+    {
+      required: true,
+      message: '请输入联系电话',
+      trigger: 'blur',
+    },
+  ],
+  "memberLaunchInfoVO.serviceNum": [
+    {
+      required: true,
+      message: '请输入客服电话',
+      trigger: 'blur',
+    },
+  ],
+})
+
 
 const dynamicTags = reactive({
-  typeIdList: [{
+  typeIdList: [
+      {
     label: 1,
     title: "科技"
   }, {
     label: 2,
-    title: "教育"
+    title: "设计"
   }, {
     label: 3,
-    title: "游戏"
+    title: "农业"
   }, {
     label: 4,
-    title: "文化"
+    title: "公益"
   }, {
     label: 5,
     title: "其他"
-  }],
+  }
+  ],
 
-  typeIdListValue: [],
+  typeIdListValue: [1],
 
   form: {
     // 分类id集合
@@ -311,26 +419,26 @@ const dynamicTags = reactive({
     // 标签id集合
     tagIdList: [],
     // 项目名称
-    projectName:null,
+    projectName: "我是项目名称",
     // 项目描述
-    projectDescription: null,
+    projectDescription: "我是项目描述",
     // 计划筹集的金额
-    money: null,
+    money: 500,
     // 筹集资金的天数
-    day: null,
+    day: 5,
     // 头图的路径
     headerPicturePath: null,
     // 详情图片的路径
     detailPicturePathList: [],
     memberLaunchInfoVO: {
       // 简单介绍
-      descriptionSimple: null,
+      descriptionSimple: "我是简单介绍",
       // 详细介绍
-      descriptionDetail: null,
+      descriptionDetail: "详细介绍",
       // 联系电话
-      phoneNum: null,
+      phoneNum: "10086",
       // 客服电话
-      serviceNum:null
+      serviceNum: "1008611"
     }
   },
 
@@ -388,27 +496,40 @@ const onChange = (status, index) => {
   dynamicTags.tagIdList[index].checked = status
 }
 
-const nextStep = () => {
-  dynamicTags.form.detailPicturePathList = !isEmpty(detailPicturePathRef.value.parentPos?.data) ?
-      detailPicturePathRef.value.parentPos?.data.detailPicturePathList : null
-  dynamicTags.form.headerPicturePath = !isEmpty(headerPicturePathRef.value.parentPos?.data) ?
-      headerPicturePathRef.value.parentPos?.data.headerPicturePath : null
-  dynamicTags.form.typeIdList = dynamicTags.typeIdListValue
-  dynamicTags.form.tagIdList = []
-  // 封装数据
-  dynamicTags.tagIdList.forEach((item) => {
-    if (item.checked) {
-      dynamicTags.form.tagIdList.push(item.value)
+const nextStep =async (formRef) => {
+  if (!formRef) return
+  await formRef.validate((valid, fields) => {
+    if (valid) {
+      dynamicTags.form.detailPicturePathList = !isEmpty(detailPicturePathRef.value.parentPos?.data) ?
+          detailPicturePathRef.value.parentPos?.data.detailPicturePathList : null
+      dynamicTags.form.headerPicturePath = !isEmpty(headerPicturePathRef.value.parentPos?.data) ?
+          headerPicturePathRef.value.parentPos?.data.headerPicturePath : null
+      dynamicTags.form.typeIdList = dynamicTags.typeIdListValue
+      dynamicTags.form.tagIdList = []
+      // 封装数据
+      dynamicTags.tagIdList.forEach((item) => {
+        if (item.checked) {
+          dynamicTags.form.tagIdList.push(item.value)
+        }
+        // dynamicTags.form.tagIdList.push(item.value)
+      })
+
+
+      console.log(dynamicTags.form)
+      creatProjects({...dynamicTags.form}).then(res => {
+        router.push({name: "Start2"})
+      }).catch(err => {
+      })
+    } else {
+      Object.keys(fields).forEach(key => {
+       throw   errorsMsg(fields[key]?.[0]?.message)
+      })
+
+      errorsMsg(fields)
+      return false
     }
-    // dynamicTags.form.tagIdList.push(item.value)
   })
 
-
-  console.log(dynamicTags.form)
-  creatProjects({...dynamicTags.form}).then(res => {
-    router.push({name: "Start2"})
-  }).catch(err => {
-  })
 }
 
 </script>

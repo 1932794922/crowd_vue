@@ -11,6 +11,7 @@ import './assets/css/login.css';
 import './assets/css/theme.css';
 import 'bootstrap/dist/css/bootstrap.css'
 import './assets/css/main.css';
+import 'animate.css';
 // 这个nprogress样式必须引入
 import 'nprogress/nprogress.css'
 

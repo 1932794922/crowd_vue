@@ -1,6 +1,5 @@
 <template>
   <div class="container theme-showcase" role="main">
-
     <div class="container">
       <div class="row clearfix">
         <div class="col-md-12 column">

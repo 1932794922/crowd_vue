@@ -116,33 +116,36 @@
                         highlight-current-row
                         :data="tableData" style="width: 100%">
                       <el-table-column label="序号" type="index" width="80"></el-table-column>
-                      <el-table-column   align="center" prop="supportMoney" label="支付金额">
+                      <el-table-column align="center" prop="supportMoney" label="支付金额">
                         <template #default="scope">{{ scope.row.supportMoney || "无" }}</template>
                       </el-table-column>
-                      <el-table-column    align="center" prop="count" label="名额">
+                      <el-table-column align="center" prop="count" label="名额">
                         <template #default="scope">{{ scope.row.count === 0 ? "不限回报数量" : scope.row.count }}</template>
                       </el-table-column>
-                      <el-table-column   align="center" prop="signalPurchase" label="单笔限购">
+                      <el-table-column align="center" prop="signalPurchase" label="单笔限购">
                         <template #default="scope">{{
                             scope.row.signalPurchase === 0 ? "不限购" : scope.row.purchase
                           }}
                         </template>
                       </el-table-column>
-                      <el-table-column   align="center" prop="type" label="回报类型">
+                      <el-table-column align="center" prop="type" label="回报类型">
                         <template #default="scope">{{ scope.row.type === 0 ? "实物回报" : "虚拟物品回报" }}</template>
                       </el-table-column>
-                      <el-table-column   align="center" prop="content" label="回报内容">
+                      <el-table-column align="center" prop="content" label="回报内容">
                         <template #default="scope">{{ scope.row.content || "无" }}</template>
                       </el-table-column>
-                      <el-table-column   align="center" prop="returnDate" label="回报时间">
-                        <template #default="scope">{{ scope.row.returnDate > 15 ? "大于15天内" :`${scope.row.returnDate}天内` }}</template>
+                      <el-table-column align="center" prop="returnDate" label="回报时间">
+                        <template #default="scope">{{
+                            scope.row.returnDate > 15 ? "大于15天内" : `${scope.row.returnDate}天内`
+                          }}
+                        </template>
                       </el-table-column>
-                      <el-table-column   align="center" prop="freight" label="运费">
+                      <el-table-column align="center" prop="freight" label="运费">
                         <template #default="scope">{{ scope.row.freight || "包邮" }}</template>
                       </el-table-column>
 
 
-                      <el-table-column   align="center" label="操作" width="150">
+                      <el-table-column align="center" label="操作" width="150">
                         <template #default="scope">
                           <el-button size="small" @click="handleEdit(scope.$index, scope.row,UPDATE)"
                           >编辑
@@ -176,7 +179,12 @@
                         <div class="panel-body">
 
                           <div class="col-md-12 column">
-                            <form class="form-horizontal">
+                            <el-form
+                                ref="formRef"
+                                :rules="rules"
+                                :model="returnForm"
+                                hide-required-asterisk
+                                class="form-horizontal">
                               <div class="form-group">
                                 <label
                                     class="col-sm-2 control-label">回报类型</label>
@@ -190,21 +198,27 @@
                               <div class="form-group">
                                 <label class="col-sm-2 control-label">支持金额（元）</label>
                                 <div class="col-sm-10">
-                                  <el-input
-                                      v-model="returnForm.supportMoney"
-                                      oninput="value=value.replace(/[^\d.]/g,'')"
-                                      type="text" style="width:100px;"/>
-                                  <br/>
+                                  <el-form-item
+                                      prop="supportMoney"
+                                  >
+                                    <el-input
+                                        v-model="returnForm.supportMoney"
+                                        oninput="value=value.replace(/[^\d.]/g,'')"
+                                        type="text" style="width:100px;"/>
+                                  </el-form-item>
                                 </div>
                               </div>
                               <div class="form-group">
                                 <label class="col-sm-2 control-label">回报内容</label>
                                 <div class="col-sm-10">
-                                  <el-input
-                                      v-model="returnForm.content"
-                                      placeholder="简单描述回报内容，不超过200字" type="textarea"
-                                      :autosize="{ minRows: 4 }"/>
-
+                                  <el-form-item
+                                      prop="content"
+                                  >
+                                    <el-input
+                                        v-model="returnForm.content"
+                                        placeholder="简单描述回报内容，不超过200字" type="textarea"
+                                        :autosize="{ minRows: 4 }"/>
+                                  </el-form-item>
                                 </div>
                               </div>
                               <div class="form-group">
@@ -250,10 +264,14 @@
                               <div class="form-group">
                                 <label class="col-sm-2 control-label">运费(元)</label>
                                 <div class="col-sm-10">
-                                  <el-input
-                                      v-model.number="returnForm.freight"
-                                      oninput="value=value.replace(/[^\d.]/g,'')"
-                                      type="text" style="width:100px; margin-right: 20px"/>
+                                  <el-form-item
+                                      prop="freight"
+                                  >
+                                    <el-input
+                                        v-model.number="returnForm.freight"
+                                        oninput="value=value.replace(/[^\d.]/g,'')"
+                                        type="text" style="width:100px; margin-right: 20px"/>
+                                  </el-form-item>
                                   <label class="control-label"> 0 为包邮</label>
                                 </div>
                               </div>
@@ -271,22 +289,27 @@
                                     class="col-sm-2 control-label">回报时间</label>
                                 <div class="col-sm-10">
                                   项目结束后
-                                  <el-input
-                                      v-model.number="returnForm.returnDate"
-                                      oninput="value=value.replace(/[^\d.]/g,'')"
-                                      type="text" style="width:50px;"/>
+                                  <el-form-item
+                                      style="display: inline-block;"
+                                      prop="returnDate"
+                                  >
+                                    <el-input
+                                        v-model.number="returnForm.returnDate"
+                                        oninput="value=value.replace(/[^\d.]/g,'')"
+                                        type="text" style="width:50px;"/>
+                                  </el-form-item>
                                   天，向支持者发送回报.
                                 </div>
                               </div>
                               <div class="form-group">
                                 <label class="col-sm-2 control-label"></label>
                                 <div class="col-sm-10 sum-btn">
-                                  <el-button @click="submitReturnBtn" type="primary">确定</el-button>
-                                  <el-button type="danger">取消</el-button>
+                                  <el-button type="danger" @click="resetForm(formRef)">取消</el-button>
+                                  <el-button @click="submitReturnBtn(formRef)" type="primary">确定</el-button>
                                 </div>
                               </div>
 
-                            </form>
+                            </el-form>
                           </div>
                         </div>
                       </div>
@@ -314,9 +337,8 @@
                       @click="perStep">上一步
               </button>
               <button type="button" class="btn  btn-warning btn-lg"
-                      @click="nextStep">下一步
+                      @click="nextStep(formRef)">下一步
               </button>
-              <a class="btn"> 预览 </a>
             </div>
           </div>
         </div>
@@ -355,9 +377,9 @@ const returnForm = reactive({
   // 回报类型：0 - 实物回报， 1 虚拟物品回报
   type: 0,
   // 支持金额
-  supportMoney: null,
+  supportMoney: 50,
   // 回报内容介绍
-  content: null,
+  content: "我是回报内容",
   // 总回报数量，0为不限制
   count: 0,
   // 是否限制单笔购买数量，0表示不限购，1表示限购
@@ -369,7 +391,7 @@ const returnForm = reactive({
   // 是否开发票，0 - 不开发票， 1 - 开发票
   invoice: 0,
   // 众筹结束后返还回报物品天数
-  returnDate: 0,
+  returnDate: 10,
   // 说明图片路径
   describePicPath: '',
 })
@@ -381,13 +403,48 @@ const tempReturnForm = cloneDeepWith(returnForm)
 // 记录是添加还是修改
 const addOrEdit = ref(ADD)
 
+const formRef = ref(null);
+
+const rules = reactive({
+  content: [
+    {
+      required: true,
+      message: '请输入回报内容',
+      trigger: 'blur',
+    },
+  ],
+  supportMoney: [
+    {
+      required: true,
+      message: '请输入支持金额',
+      trigger: 'blur',
+    },
+  ],
+  freight: [
+    {
+      required: true,
+      message: '请输入运费',
+      trigger: 'blur',
+    },
+  ],
+
+  returnDate: [
+    {
+      required: true,
+      message: '请输入返还回报物品天数',
+      trigger: 'blur',
+    },
+  ]
+})
 
 const perStep = () => {
   router.push({name: "Start1"})
 }
 
 const nextStep = () => {
-
+  if (!tableData.value.length) {
+    return errorsMsg("至少要添加一个回报")
+  }
   creatReturn(tableData.value || []).then(res => {
     if (res.code !== 200) {
       console.log(res)
@@ -398,15 +455,12 @@ const nextStep = () => {
 
   });
 
-  // router.push({name: "Start3"})
 }
-
 // 编辑
 const handleEdit = (index, row, option) => {
   addOrEdit.value = option
   row.index = index
   Object.assign(returnForm, row)
-  console.log(row)
   isShowReturn.value = true
 }
 
@@ -415,27 +469,40 @@ const handleDelete = (index) => {
   tableData.value?.splice(index, 1)
 }
 
-const submitReturnBtn = () => {
+const submitReturnBtn = async (formRef) => {
   // 判断是否有新增还是修改
-  returnForm.describePicPath = !isEmpty(describePicPathUploadRef.value.parentPos?.data) ?
-      describePicPathUploadRef.value.parentPos?.data.describePicPath : null
-  let temp = cloneDeepWith(returnForm)
-  if (addOrEdit.value === ADD) {
-    tableData.value.push(temp)
-  } else {
-    tableData.value[returnForm.index] = temp
-  }
-  // 清空回复表单
-  Object.assign(returnForm, tempReturnForm)
-  isShowReturn.value = false
-  // 回复默认值
-  addOrEdit.value = ADD
+  if (!formRef) return
+  await formRef.validate((valid, fields) => {
+    if (valid) {
+      returnForm.describePicPath = !isEmpty(describePicPathUploadRef.value.parentPos?.data) ?
+          describePicPathUploadRef.value.parentPos?.data.describePicPath : null
+      let temp = cloneDeepWith(returnForm)
+      if (addOrEdit.value === ADD) {
+        tableData.value.push(temp)
+      } else {
+        tableData.value[returnForm.index] = temp
+      }
+      // 清空回复表单
+      Object.assign(returnForm, tempReturnForm)
+      isShowReturn.value = false
+      // 回复默认值
+      addOrEdit.value = ADD
+    } else {
+      Object.keys(fields).forEach(key => {
+        throw errorsMsg(fields[key]?.[0]?.message)
+      })
+      return false
+    }
+  })
 }
 
-
+const resetForm = (formEl) => {
+  if (!formEl) return
+  formEl.resetFields()
+}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #footer {
   padding: 15px 0;
   background: #fff;
@@ -509,4 +576,9 @@ const submitReturnBtn = () => {
   margin-top: 20px;
 }
 
+.panel-footer{
+  button{
+    margin-right: 30px;
+  }
+}
 </style>
