@@ -2,7 +2,6 @@
 
   <div class="container theme-showcase" role="main">
 
-
     <div class="container">
       <div class="row clearfix">
         <div class="col-md-12 column">
@@ -84,33 +83,46 @@
                     </blockquote>
                   </div>
                   <div class="col-md-12 column">
-                    <table class="table table-bordered" style="text-align:center;">
+                    <table align="center" class="table table-bordered" style="text-align:center;">
                       <thead>
                       <tr style="background-color:#ddd;">
                         <td>项目名称</td>
                         <td>发起人</td>
                         <td width="300">回报内容</td>
-                        <td width="80">回报数量</td>
+                        <td width="150">{{
+                            `回报数量(${order.detailReturnVOList?.[0].signalPurchase === 0 ?
+                                '不限购' : '限购数' + order.detailReturnVOList?.[0].purchase})`
+                          }}
+                        </td>
                         <td>支持单价</td>
                         <td>配送费用</td>
                       </tr>
                       </thead>
                       <tbody>
-                      <tr>
-                        <td>活性富氢净水直饮机</td>
-                        <td>深圳市博实永道电子商务有限公司</td>
-                        <td>每满1750人抽取一台活性富氢净水直饮机，至少抽取一台。抽取名额（小数点后一位四舍五入）=参与人数÷1750人，由苏宁官方抽取。</td>
-                        <td><input type="text" class="form-control" style="width:60px;" value="1">
+                      <tr align="center" style="text-align:center;">
+                        <td>{{ order.projectName }}</td>
+                        <td>{{ order.memberLaunchInfoVO?.descriptionSimple }}</td>
+                        <td>{{ order.detailReturnVOList?.[0].content }}</td>
+                        <td>
+                          <el-input
+                              v-model.number="orderForm.number"
+                              style="width:60px;"
+                              @input="changeNumber"
+                          ></el-input>
                         </td>
-                        <td style="color:#F60">￥ 1.00</td>
-                        <td>免运费</td>
+                        <td style="color:#F60">￥ {{ order.detailReturnVOList?.[0].supportMoney }}</td>
+                        <td style="color:#F60">
+                          {{
+                            order.detailReturnVOList?.[0].freight === 0 ? "免运费" : `￥ ${order.detailReturnVOList?.[0].freight} `
+                          }}
+                        </td>
                       </tr>
                       </tbody>
                     </table>
                     <div style="float:right;">
-                      <p>总价(含运费)：<span style="font-size:16px;color:#F60;">￥1.00</span></p>
+                      <p>总价(含运费)：<span style="font-size:16px;color:#F60;">￥{{ orderForm.total }}</span></p>
                       <button type="button" class="btn btn-warning btn-lg" style="float:right;"
-                              onclick="window.location.href='pay-step-2.html'"><i
+                              @click="goToSettlement"><i
                           class="glyphicon glyphicon-credit-card"></i> 去结算
                       </button>
                     </div>
@@ -134,8 +146,6 @@
                       </div>
                     </div>
                   </div>
-
-
                 </div>
               </div>
             </div>
@@ -168,12 +178,68 @@
   </div> <!-- /container -->
 </template>
 
+<script setup>
+
+import {useRoute, useRouter} from "vue-router";
+import {computed, onMounted, reactive, ref} from "vue";
+import {errorsMsg} from "@/utils/web-utils";
+import {cloneDeep} from "lodash/lang";
+
+const router = useRouter();
+const route = useRoute();
+
+const order = reactive({})
+
+const orderForm = reactive({
+  id: null,
+  number: 1,
+  total: 0,
+  freight: 0,
+  order: ''
+})
+orderForm.total = computed(() => {
+  return orderForm.number * order.detailReturnVOList?.[0].supportMoney + order.detailReturnVOList?.[0].freight
+})
+
+
+const goToSettlement = () => {
+  let tempOrder = JSON.stringify(orderForm)
+  router.push({name: 'PayStepTwo', params: {order: tempOrder}})
+}
+
+const changeNumber = (number) => {
+  //signalPurchase为0 表示不限购
+  console.log(order.detailReturnVOList?.[0].signalPurchase)
+  if (order.detailReturnVOList?.[0].signalPurchase) {
+    if (number && number < 1) {
+      errorsMsg("回报数量不能为0")
+    }
+    if (number > order.detailReturnVOList?.[0].purchase) {
+      orderForm.number = order.detailReturnVOList?.[0].purchase
+      errorsMsg("回报数量不能大于限购数量")
+    }
+  }
+
+
+}
+
+onMounted(() => {
+  if (route.params.detailProject) {
+    let tempOrder = JSON.parse(route.params.detailProject)
+    Object.assign(order, tempOrder)
+  } else {
+    router.push({name: 'Detail'});
+  }
+  orderForm.order = cloneDeep(order)
+  console.log(orderForm)
+})
+</script>
 <script>
 export default {
-  name: "PayStepOne"
-}
-</script>
+  name: "PayStepOne",
 
+};
+</script>
 <style scoped>
 
 #footer {
@@ -182,6 +248,7 @@ export default {
   border-top: 1px solid #ddd;
   text-align: center;
 }
+
 #topcontrol {
   color: #fff;
   z-index: 99;
@@ -216,20 +283,23 @@ export default {
 .label-type, .label-status, .label-order {
   background-color: #fff;
   color: #f60;
-  padding : 5px;
+  padding: 5px;
   border: 1px #f60 solid;
 }
-#typeList  :not(:first-child) {
-  margin-top:20px;
+
+#typeList :not(:first-child) {
+  margin-top: 20px;
 }
+
 .label-txt {
-  margin:10px 10px;
-  border:1px solid #ddd;
-  padding : 4px;
-  font-size:14px;
+  margin: 10px 10px;
+  border: 1px solid #ddd;
+  padding: 4px;
+  font-size: 14px;
 }
+
 .panel {
-  border-radius:0;
+  border-radius: 0;
 }
 
 .progress-bar-default {

@@ -96,72 +96,77 @@
                     </blockquote>
                   </div>
                   <div class="col-md-12 column" style="padding:0 120px;">
-                    <div class="radio">
-                      <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"
-                               checked>
-                        xxxxx 188****3342 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                      </label>
-                    </div>
-                    <div class="radio">
-                      <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios2"
-                               value="option2">
-                        xxxxx 188****3342 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                      </label>
-                    </div>
-                    <div class="radio">
-                      <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios2"
-                               value="option2">
-                        新地址
-                      </label>
-                    </div>
-                    <div style="border:10px solid #f60;border-bottom-color: #eceeef;border-width: 10px;width:20px;margin-left:20px;margin-top:-20px;
+                    <div  v-if="!orderForm.address.length">尚未创建收货地址</div>
+                    <el-radio-group v-model="radioAddress">
+                      <template v-for="(item,index) in orderForm.address" :key="index">
+                        <el-radio :label="item.id">{{ item.receiveName }}---{{ item.address }}---{{ item.phoneNum }}
+                        </el-radio>
+                        <br/>
+                      </template>
+                      <el-button @click="isShowAddAddress=!isShowAddAddress"
+                                 size="small" type="primary">
+                        新增地址
+                      </el-button>
+                      <el-button
+                          @click="deleteAddressBtn"
+                          size="small"
+                          v-if="orderForm.address.length" type="danger">
+                        删除地址
+                      </el-button>
+                    </el-radio-group>
+                    <template v-if="isShowAddAddress">
+                      <div style="border:10px solid #f60;border-bottom-color: #eceeef;border-width: 10px;width:20px;margin-left:20px;margin-top:-20px;
                                              border-left-color: rgba(221, 221, 221, 0);
                                              border-top-color: rgba(221, 221, 221, 0);
                                              border-right-color: rgba(221, 221, 221, 0);
                                     "></div>
-                    <div class="panel panel-default"
-                         style="border-style: dashed;background-color:#eceeef">
-                      <div class="panel-body">
-                        <div class="col-md-12 column">
-                          <form class="form-horizontal">
-                            <div class="form-group">
-                              <label class="col-sm-2 control-label">收货人（*）</label>
-                              <div class="col-sm-10">
-                                <input type="text" class="form-control" style="width:200px;"
-                                       placeholder="姓名：xxxx">
+                      <div class="panel panel-default"
+                           style="border-style: dashed;background-color:#eceeef">
+                        <div class="panel-body">
+                          <div class="col-md-12 column">
+                            <el-form class="form-horizontal"
+                                     ref="formRef"
+                                     :model="receiveAddress"
+                                     :rules="rules"
+                                     label-width="70px"
+                            >
+                              <el-form-item prop="address" label="收货人">
+                                <el-input v-model="receiveAddress.address"
+                                          placeholder="姓名：xxxx"
+                                />
+                              </el-form-item>
+                              <el-form-item prop="phoneNum" label="手机">
+                                <el-input v-model="receiveAddress.phoneNum"
+                                          placeholder="请填写11位手机号码"
+                                />
+                              </el-form-item>
+                              <el-form-item prop="receiveName" label="地址">
+                                <el-input
+                                    v-model="receiveAddress.receiveName"
+                                    placeholder="请填写收货地址"
+                                />
+                              </el-form-item>
+                              <div class="form-group">
+                                <label class="col-sm-5 control-label"></label>
+                                <div class="col-sm-12">
+                                  <button style="float: right;"
+                                          type="button"
+                                          class="btn btn-primary"
+                                          @click="addAddress(formRef)"
+                                  >确认配送信息
+                                  </button>
+                                </div>
                               </div>
-                            </div>
-                            <div class="form-group">
-                              <label class="col-sm-2 control-label">手机（*）</label>
-                              <div class="col-sm-10">
-                                <input class="form-control" type="text" style="width:200px;"
-                                       placeholder="请填写11位手机号码"></input>
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <label class="col-sm-2 control-label">地址（*）</label>
-                              <div class="col-sm-10">
-                                <input class="form-control" type="text" style="width:400px;"
-                                       placeholder="请填写11位手机号码"></input>
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <label for="inputEmail3" class="col-sm-2 control-label"></label>
-                              <div class="col-sm-10">
-                                <button type="button" class="btn btn-primary">确认配送信息
-                                </button>
-                              </div>
-                            </div>
-                          </form>
+                            </el-form>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </template>
                   </div>
                 </div>
               </div>
+
+
               <div class="container-fluid">
                 <div class="row clearfix">
                   <div class="col-md-12 column">
@@ -174,14 +179,14 @@
                   <div class="col-md-12 column" style="padding:0 120px;">
                     <div class="radio">
                       <label>
-                        <input type="radio" name="optionsRadios1" id="optionsRadios1"
+                        <input type="radio" name="optionsRadios1"
                                value="option1" checked>
                         无需发票
                       </label>
                     </div>
                     <div class="radio">
                       <label>
-                        <input type="radio" name="optionsRadios1" id="optionsRadios2"
+                        <input type="radio" name="optionsRadios1"
                                value="option2">
                         需要发票
                       </label>
@@ -215,7 +220,7 @@
                   <div class="col-md-12 column">
                     <blockquote style="border-left: 5px solid #f60;color:#f60;padding: 0 0 0 20px;">
                       <b>
-                        项目信息 <a style="font-size:12px;" href="pay-step-1.html">修改数量</a>
+                        项目信息
                       </b>
                     </blockquote>
                   </div>
@@ -232,13 +237,19 @@
                       </tr>
                       </thead>
                       <tbody>
-                      <tr>
-                        <td>活性富氢净水直饮机</td>
-                        <td>深圳市博实永道电子商务有限公司</td>
-                        <td>每满1750人抽取一台活性富氢净水直饮机，至少抽取一台。抽取名额（小数点后一位四舍五入）=参与人数÷1750人，由苏宁官方抽取。</td>
-                        <td>1</td>
-                        <td style="color:#F60">￥ 1.00</td>
-                        <td>免运费</td>
+                      <tr align="center" style="text-align:center;">
+                        <td>{{ orderForm.order.projectName }}</td>
+                        <td>{{ orderForm.order.memberLaunchInfoVO?.descriptionSimple }}</td>
+                        <td>{{ orderForm.order.detailReturnVOList?.[0].content }}</td>
+                        <td>
+                          {{ orderForm.number }}
+                        </td>
+                        <td style="color:#F60">￥ {{ orderForm.order.detailReturnVOList?.[0].supportMoney }}</td>
+                        <td style="color:#F60">
+                          {{
+                            orderForm.order.detailReturnVOList?.[0].freight === 0 ? "免运费" : `￥ ${orderForm.order.detailReturnVOList?.[0].freight} `
+                          }}
+                        </td>
                       </tr>
                       </tbody>
                     </table>
@@ -247,8 +258,8 @@
                     <div class="form-group">
                       <label class="col-sm-2 control-label">备注</label>
                       <div class="col-sm-10">
-                                            <textarea class="form-control" rows="1"
-                                                      placeholder="填写关于回报或发起人希望您备注的信息"></textarea>
+                        <textarea class="form-control" rows="1"
+                                  placeholder="填写关于回报或发起人希望您备注的信息"></textarea>
                       </div>
                     </div>
                   </div>
@@ -259,17 +270,21 @@
                       </b>
                     </blockquote>
                   </div>
-
                   <div class="col-md-12 column">
                     <div class="alert alert-warning alert-dismissable"
                          style="text-align:right; border:2px solid #ffc287;">
                       <ul style="list-style:none;">
-                        <li style="margin-top:10px;">支持金额：<span style="color:red;">￥1.00</span></li>
-                        <li style="margin-top:10px;">配送费用：<span style="color:red;">￥0.00</span></li>
+                        <li style="margin-top:10px;">支持金额：<span
+                            style="color:red;">￥{{
+                            orderForm.number * orderForm.order.detailReturnVOList?.[0].supportMoney
+                          }}</span>
+                        </li>
+                        <li style="margin-top:10px;">配送费用：<span
+                            style="color:red;">￥{{ orderForm.order.detailReturnVOList?.[0].freight }}</span></li>
                         <li style="margin-top:10px;">优惠金额：<span style="color:red;">-￥0.00</span>
                         </li>
                         <li style="margin-top:10px;margin-bottom:10px;"><h2>支付总金额：<span
-                            style="color:red;">￥1.00</span></h2></li>
+                            style="color:red;">￥{{ orderForm.total }}</span></h2></li>
                         <li style="margin-top:10px;padding:5px;border:1px solid #F00;display:initial;background:#FFF;">
                           <i class="glyphicon glyphicon-info-sign"></i> <strong>您需要先 <a
                             href="#address">设置配送信息</a> ,再提交订单</strong>
@@ -291,8 +306,6 @@
                           </div>
                         </li>
                       </ul>
-
-
                     </div>
                   </div>
                   <div class="container">
@@ -313,8 +326,6 @@
                       </div>
                     </div>
                   </div>
-
-
                 </div>
               </div>
             </div>
@@ -347,10 +358,118 @@
   </div> <!-- /container -->
 </template>
 
+<script setup>
+import {useRouter, useRoute} from "vue-router";
+import {onBeforeMount, onMounted, reactive, ref} from "vue";
+import {deleteAddress, queryAddress, saveAddress} from "@/api/member/memberProject";
+import {errorsMsg} from "@/utils/web-utils";
+
+const router = useRouter();
+const route = useRoute();
+
+const isShowAddAddress = ref(false);
+
+const formRef = ref(null)
+
+const radioAddress = ref(1)
+
+const orderForm = reactive({
+  id: null,
+  total: 0,
+  freight: 0,
+  order: {},
+  address: [],
+})
+
+const receiveAddress = reactive({
+  address: null,
+  phoneNum: null,
+  receiveName: null,
+
+})
+const addAddress = async (formEl) => {
+  if (!formEl) return
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      saveAddress({...receiveAddress}).then(res => {
+        orderForm.address.push({
+          id: res.data.id,
+          address: res.data.address,
+          phoneNum: res.data.phoneNum,
+          receiveName: res.data.receiveName,
+        })
+        radioAddress.value = res.data.id
+        resetForm(formEl)
+        isShowAddAddress.value = false
+      }).catch(err => {
+        errorsMsg(err.message)
+      })
+
+
+      console.log(receiveAddress)
+    } else {
+      console.log('error submit!', fields)
+    }
+  })
+}
+
+
+const deleteAddressBtn = () => {
+  if (!orderForm.address.length) return errorsMsg('请选择收货地址')
+  deleteAddress({id: radioAddress.value})
+      .then(res => {
+        if (res.code !== 200) {
+          return errorsMsg(res.message)
+        }
+        orderForm.address = orderForm.address.filter(item => item.id !== radioAddress.value)
+        radioAddress.value = orderForm.address[0]?.id
+        console.log(res);
+      })
+      .catch(err => {
+        errorsMsg(err.message)
+      })
+}
+
+
+const resetForm = (formEl) => {
+  if (!formEl) return
+  formEl.resetFields()
+}
+
+onBeforeMount(() => {
+  if (route.params.order) {
+    let tempOrder = JSON.parse(route.params.order)
+    Object.assign(orderForm, tempOrder)
+  } else {
+    router.push({name: 'Detail'});
+  }
+  console.log(orderForm.order)
+})
+
+const rules = reactive({
+  address: [
+    {required: true, message: '收货人不能为空', trigger: 'blur'},
+  ],
+  phoneNum: [
+    {required: true, message: '手机号不能为空', trigger: 'blur'},
+  ],
+  receiveName: [
+    {required: true, message: '地址不能为空', trigger: 'blur'},
+  ],
+})
+
+onMounted(() => {
+  queryAddress().then(res => {
+    orderForm.address = res.data || []
+    radioAddress.value = orderForm.address[0]?.id
+  })
+})
+</script>
 <script>
 export default {
-  name: "PayStepOne"
-}
+  name: "PayStepTwo",
+
+};
 </script>
 <style scoped>
 #footer {
@@ -359,6 +478,7 @@ export default {
   border-top: 1px solid #ddd;
   text-align: center;
 }
+
 #topcontrol {
   color: #fff;
   z-index: 99;
@@ -393,23 +513,34 @@ export default {
 .label-type, .label-status, .label-order {
   background-color: #fff;
   color: #f60;
-  padding : 5px;
+  padding: 5px;
   border: 1px #f60 solid;
 }
-#typeList  :not(:first-child) {
-  margin-top:20px;
+
+#typeList :not(:first-child) {
+  margin-top: 20px;
 }
+
 .label-txt {
-  margin:10px 10px;
-  border:1px solid #ddd;
-  padding : 4px;
-  font-size:14px;
+  margin: 10px 10px;
+  border: 1px solid #ddd;
+  padding: 4px;
+  font-size: 14px;
 }
+
 .panel {
-  border-radius:0;
+  border-radius: 0;
 }
 
 .progress-bar-default {
   background-color: #ddd;
+}
+
+.el-radio-group {
+  display: flex;
+}
+
+.panel-body {
+  text-align: left;
 }
 </style>

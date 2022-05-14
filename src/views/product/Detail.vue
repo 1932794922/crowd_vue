@@ -51,18 +51,18 @@
         </div>
       </div>
 
-      <div class="container">
+      <div class="container" v-if="!isEmpty(detailProject)">
         <div class="row clearfix">
           <div class="col-md-12 column">
             <div class="row clearfix">
               <div class="col-md-8 column">
                 <div class="demo-image__lazy">
-                  <el-image  :src="detailProject.headerPicturePath" lazy
-                             :preview-src-list="[detailProject.headerPicturePath]"
+                  <el-image :src="detailProject.headerPicturePath" lazy
+                            :preview-src-list="[detailProject.headerPicturePath]"
                   >
                     <template #error>
                       <div class="image-slot">
-                       没有详情图片
+                        没有详情图片
                       </div>
                     </template>
                   </el-image>
@@ -71,7 +71,7 @@
                             lazy>
                     <template #error>
                       <div class="image-slot">
-                        <el-icon><icon-picture /></el-icon>
+                        没有详情图片
                       </div>
                     </template>
                   </el-image>
@@ -111,19 +111,23 @@
                           <img alt="140x140" src="~@/assets/img/services-box2.jpg"
                                data-holder-rendered="true" style="width: 80px; height: 80px;">
                         </div>
-                        <div class="col-md-9 column">
+                        <div v-if="detailProject.memberLaunchInfoVO" class="col-md-9 column">
                           <div class="">
                             <h4>
-                              <b>福建省南安厨卫</b> <span style="float:right;font-size:12px;"
-                                                   class="label label-success">已认证</span>
+                              <b>{{ detailProject.memberLaunchInfoVO?.descriptionDetail }}</b> <span
+                                style="float:right;font-size:12px;"
+                                class="label label-success">已认证</span>
                             </h4>
                             <p style="font-size:12px">
-                              酷驰是一家年轻的厨卫科技公司，我们有一支朝气蓬勃，有激情、有想法、敢实践的团队。
-
+                              {{ detailProject.memberLaunchInfoVO?.descriptionSimple }}
                             </p>
                             <p style="font-size:12px">
-                              客服电话:0595-86218855
+                              手机电话:{{ detailProject.memberLaunchInfoVO?.phoneNum }}
                             </p>
+                            <p style="font-size:12px">
+                              客服电话:{{ detailProject.memberLaunchInfoVO?.serviceNum }}
+                            </p>
+
                           </div>
                         </div>
                       </div>
@@ -146,7 +150,8 @@
                       <p>配送费用：{{ item.freight === 0 ? "包邮" : `${item.purchase} 元` }}</p>
                       <p>预计发放时间：项目筹款成功后的{{ item.returnDate }}天内</p>
                       <button type="button" class="btn  btn-warning btn-lg"
-                              onclick="window.location.href='pay-step-1.html'">支持
+                              @click="goToSupport(item.id)">支持
+
                       </button>
                       <br><br>
                       <p>{{ item.content }}</p>
@@ -262,12 +267,10 @@
 </template>
 
 <script setup>
-
-
-import {onMounted, reactive} from "vue";
-import {queryProjectDetail} from "@/api/member/memberProject";
-import {useRoute} from "vue-router";
-
+import {isEmpty} from 'lodash/lang';
+import {onBeforeMount,  reactive} from "vue";
+import { queryProjectDetail} from "@/api/member/memberProject";
+import {useRoute, useRouter} from "vue-router";
 
 const detailProject = reactive({});
 const customColors = [
@@ -279,10 +282,10 @@ const customColors = [
 ]
 
 const route = useRoute()
+const router = useRouter()
 
 // 0-即将开始，1-众筹中，2-众筹成功，3-众筹失败
 const projectStatus = (status) => {
-  console.log(status)
   switch (status) {
     case 0:
       return "即将开始"
@@ -296,10 +299,14 @@ const projectStatus = (status) => {
   }
 };
 
-onMounted(() => {
+const goToSupport = () => {
+  let detailProjectObject = JSON.stringify(detailProject)
+  router.push({name: "PayStepOne", params: {detailProject: detailProjectObject}})
+}
+
+onBeforeMount(() => {
   let id = route.params.projectId || "1"
   queryProjectDetail({id}).then(res => {
-    console.log(res)
     Object.assign(detailProject, res.data)
   }).catch(err => {
   });
@@ -307,45 +314,6 @@ onMounted(() => {
 </script>
 
 <style>
-
-#footer {
-  padding: 15px 0;
-  background: #fff;
-  border-top: 1px solid #ddd;
-  text-align: center;
-}
-
-#topcontrol {
-  color: #fff;
-  z-index: 99;
-  width: 30px;
-  height: 30px;
-  font-size: 20px;
-  background: #222;
-  position: relative;
-  right: 14px !important;
-  bottom: 11px !important;
-  border-radius: 3px !important;
-}
-
-#topcontrol:after {
-  /*top: -2px;*/
-  left: 8.5px;
-  content: "\f106";
-  position: absolute;
-  text-align: center;
-  font-family: FontAwesome;
-}
-
-#topcontrol:hover {
-  color: #fff;
-  background: #18ba9b;
-  -webkit-transition: all 0.3s ease-in-out;
-  -moz-transition: all 0.3s ease-in-out;
-  -o-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
-}
-
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
   border-bottom-color: #ddd;
 }

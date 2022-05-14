@@ -47,3 +47,26 @@ export const queryProjectType = () => {
 export const queryProjectDetail = (id) => {
     return axios.get(projectApi.detail,id)
 }
+
+const api = {
+    getLaunchName: 'order/launch/name/get', // 项目集资
+    address: 'order/address/get', // 项目集资
+    saveAddress: 'order/address/save', // 项目集资
+    deleteAddress: 'order/address/delete', // 项目集资
+}
+
+export const queryLaunch = (id) => {
+    return axios.get(api.getLaunchName,id)
+}
+
+export const queryAddress = () => {
+    return axios.get(api.address)
+}
+export const saveAddress = (params) => {
+    return axios.post(api.saveAddress,params)
+}
+
+
+export const deleteAddress = (params) => {
+    return axios.delete(api.deleteAddress,params)
+}

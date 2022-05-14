@@ -514,8 +514,6 @@ const nextStep =async (formRef) => {
         // dynamicTags.form.tagIdList.push(item.value)
       })
 
-
-      console.log(dynamicTags.form)
       creatProjects({...dynamicTags.form}).then(res => {
         router.push({name: "Start2"})
       }).catch(err => {

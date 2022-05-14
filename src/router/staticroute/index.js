@@ -74,6 +74,24 @@ const staticRoutes = [
                 },
             },
             {
+                path: 'paystepone',
+                name: 'PayStepOne',
+                component: () => import('@/views/pay/PayStepOne.vue'),
+                meta: {
+                    title: "创建订单",
+                    keepAlive: false
+                },
+            },
+            {
+                path: 'paysteptwo',
+                name: 'PayStepTwo',
+                component: () => import('@/views/pay/PayStepTwo.vue'),
+                meta: {
+                    title: "订单支付",
+                    keepAlive: false
+                },
+            },
+            {
                 path: 'project-list',
                 name: 'ProjectList',
                 component: () => import('@/views/product/ProjectList.vue'),
