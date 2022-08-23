@@ -53,6 +53,7 @@ const api = {
     address: 'order/address/get', // 项目集资
     saveAddress: 'order/address/save', // 项目集资
     deleteAddress: 'order/address/delete', // 项目集资
+    creatOrder: 'payorder/creat/order', // 项目集资
 }
 
 export const queryLaunch = (id) => {
@@ -69,4 +70,7 @@ export const saveAddress = (params) => {
 
 export const deleteAddress = (params) => {
     return axios.delete(api.deleteAddress,params)
+}
+export const creatOrder = (params) => {
+    return axios.post(api.creatOrder,params)
 }

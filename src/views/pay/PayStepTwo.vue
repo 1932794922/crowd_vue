@@ -96,7 +96,7 @@
                     </blockquote>
                   </div>
                   <div class="col-md-12 column" style="padding:0 120px;">
-                    <div  v-if="!orderForm.address.length">尚未创建收货地址</div>
+                    <div v-if="!orderForm.address.length">尚未创建收货地址</div>
                     <el-radio-group v-model="radioAddress">
                       <template v-for="(item,index) in orderForm.address" :key="index">
                         <el-radio :label="item.id">{{ item.receiveName }}---{{ item.address }}---{{ item.phoneNum }}
@@ -175,22 +175,10 @@
                         发票信息
                       </b>
                     </blockquote>
+                    <el-radio v-model="orderForm.invoice" :label="0" size="large">无需发票</el-radio>
+                    <el-radio v-model="orderForm.invoice" :label="1" size="large">需要发票</el-radio>
                   </div>
-                  <div class="col-md-12 column" style="padding:0 120px;">
-                    <div class="radio">
-                      <label>
-                        <input type="radio" name="optionsRadios1"
-                               value="option1" checked>
-                        无需发票
-                      </label>
-                    </div>
-                    <div class="radio">
-                      <label>
-                        <input type="radio" name="optionsRadios1"
-                               value="option2">
-                        需要发票
-                      </label>
-                    </div>
+                  <div v-if="orderForm.invoice" class="col-md-12 column" style="padding:0 120px;">
                     <div style="border:10px solid #f60;border-bottom-color: #eceeef;border-width: 10px;width:20px;margin-left:20px;margin-top:-20px;
                                              border-left-color: rgba(221, 221, 221, 0);
                                              border-top-color: rgba(221, 221, 221, 0);
@@ -204,8 +192,9 @@
                             <div class="form-group">
                               <label class="col-sm-2 control-label">发票抬头（*）</label>
                               <div class="col-sm-10">
-                                <input type="text" class="form-control" style="width:200px;"
-                                       placeholder="个人">
+                                <el-input type="text" v-model="orderForm.invoiceTitle"
+                                          style="width:200px;"
+                                          placeholder="个人"/>
                               </div>
                             </div>
                           </form>
@@ -258,8 +247,7 @@
                     <div class="form-group">
                       <label class="col-sm-2 control-label">备注</label>
                       <div class="col-sm-10">
-                        <textarea class="form-control" rows="1"
-                                  placeholder="填写关于回报或发起人希望您备注的信息"></textarea>
+                        <el-input v-model="orderForm.orderRemark" type="textarea"/>
                       </div>
                     </div>
                   </div>
@@ -285,7 +273,8 @@
                         </li>
                         <li style="margin-top:10px;margin-bottom:10px;"><h2>支付总金额：<span
                             style="color:red;">￥{{ orderForm.total }}</span></h2></li>
-                        <li style="margin-top:10px;padding:5px;border:1px solid #F00;display:initial;background:#FFF;">
+                        <li v-if="!orderForm.address.length"
+                            style="margin-top:10px;padding:5px;border:1px solid #F00;display:initial;background:#FFF;">
                           <i class="glyphicon glyphicon-info-sign"></i> <strong>您需要先 <a
                             href="#address">设置配送信息</a> ,再提交订单</strong>
                         </li>
@@ -293,15 +282,21 @@
                           请在下单后15分钟内付款，否则您的订单会被自动关闭。
                         </li>
                         <li style="margin-top:10px;">
-                          <button disabled="disabled" type="button" class="btn btn-warning btn-lg"
-                                  onclick="window.location.href='pay-step-3.html'"><i
-                              class="glyphicon glyphicon-credit-card"></i> 立即付款
-                          </button>
+                          <el-button :disabled="!orderForm.checked"
+                                     @click="submitOrder"
+                                     size="large"
+                                     type="primary"
+                                     class="btn btn-warning btn-lg"
+                          ><i
+                              class="glyphicon glyphicon-credit-card"></i>
+                            立即付款
+                          </el-button>
                         </li>
                         <li style="margin-top:10px;">
                           <div class="checkbox">
-                            <label>
-                              <input type="checkbox" checked> 我已了解风险和规则
+                            <label @click="orderForm.checked=!orderForm.checked">
+                              <input type="checkbox" :checked="orderForm.checked">
+                              我已了解风险和规则
                             </label>
                           </div>
                         </li>
@@ -350,19 +345,19 @@
               Copyright ?2010-2014atguigu.com 版权所有
             </div>
           </div>
-
         </div>
       </div>
     </div>
-
+    <div v-html="htmlForm"></div>
   </div> <!-- /container -->
 </template>
 
 <script setup>
 import {useRouter, useRoute} from "vue-router";
-import {onBeforeMount, onMounted, reactive, ref} from "vue";
-import {deleteAddress, queryAddress, saveAddress} from "@/api/member/memberProject";
+import {onBeforeMount, onMounted, reactive, ref, watch} from "vue";
+import {creatOrder, deleteAddress, queryAddress, saveAddress} from "@/api/member/memberProject";
 import {errorsMsg} from "@/utils/web-utils";
+import {cloneDeep} from "lodash/lang";
 
 const router = useRouter();
 const route = useRoute();
@@ -372,6 +367,7 @@ const isShowAddAddress = ref(false);
 const formRef = ref(null)
 
 const radioAddress = ref(1)
+const htmlForm = ref('')
 
 const orderForm = reactive({
   id: null,
@@ -379,6 +375,14 @@ const orderForm = reactive({
   freight: 0,
   order: {},
   address: [],
+  invoice: 0,
+  invoiceTitle: null,
+  orderRemark: null,
+  checked: false,
+})
+
+watch(() => orderForm.invoice, (newValue) => {
+  console.log(newValue)
 })
 
 const receiveAddress = reactive({
@@ -404,14 +408,41 @@ const addAddress = async (formEl) => {
       }).catch(err => {
         errorsMsg(err.message)
       })
-
-
       console.log(receiveAddress)
     } else {
       console.log('error submit!', fields)
     }
   })
 }
+
+
+const submitOrder = () => {
+  let orderFormApi = cloneDeep(orderForm)
+  console.log(orderFormApi)
+  creatOrder({
+    freight: orderFormApi.freight,
+    invoice: orderFormApi.invoice,
+    orderRemark: orderFormApi.orderRemark,
+    invoiceTitle: orderFormApi.invoiceTitle,
+    addressId: orderFormApi.address.splice(0, 1)[0].id,
+    supportPrice: orderFormApi.order.detailReturnVOList[0]?.supportMoney,
+    projectName: orderFormApi.order.projectName,
+    launchName: orderFormApi.order.memberLaunchInfoVO?.descriptionSimple,
+    returnContent: orderFormApi.order.detailReturnVOList[0]?.content,
+    returnCount: orderFormApi.number,
+    signalPurchase: orderFormApi.order.detailReturnVOList[0]?.signalPurchase,
+    purchase: orderFormApi.order.detailReturnVOList[0]?.purchase,
+  }).then(res => {
+    htmlForm.value = res.data
+    const div = document.createElement('div')
+    div.innerHTML = res.data //此处form就是后台返回接收到的数据
+    document.body.appendChild(div)
+    document.forms[0].submit()
+  }).catch(err => {
+
+  })
+
+};
 
 
 const deleteAddressBtn = () => {
